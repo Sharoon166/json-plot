@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "page_number": 14,
+  "annotations": {
+    "p014-011377d9d5": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1646.12,
+        1112.17,
+        2023.4,
+        1545.75
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "FRAME DIMENSION | ROUGH OPENING ROUGH OPENING.",
+      "ocr_confidence": 0.325142,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-a1865dce6a": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        631.99,
+        763.55,
+        869.9,
+        1184.8
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "e s pooe Q) ATy % - —BacKeR RoD 4nD SEALWT SHM 45 REQUIRED /mcm ROD AND SEALANT",
+      "ocr_confidence": 0.382117,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-1cdc53af9d": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1644.31,
+        996.09,
+        2049.74,
+        1541.99
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-eff47b2e44": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        873.91,
+        1093.84,
+        1397.08,
+        1547.96
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-552638c8d4": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1608.96,
+        555.7,
+        2045.42,
+        980.9
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-78aeceab79": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1423.12,
+        39.93,
+        1781.76,
+        492.48
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-4f5fdb4585": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        589.26,
+        1235.91,
+        843.82,
+        1546.56
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-88c7520cb4": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        90.92,
+        1094.09,
+        983.04,
+        1563.37
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-b4bbbc01c9": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        114.02,
+        1100.14,
+        549.87,
+        1552.63
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-719c5eb00f": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1442.38,
+        552.29,
+        1781.76,
+        832.77
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-c69c74d8cb": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        193.61,
+        105.05,
+        734.3,
+        517.08
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-eac29861aa": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        197.36,
+        547.25,
+        689.11,
+        982.49
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-9a110b71e2": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        576.51,
+        1175.07,
+        983.04,
+        1598.61
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-034fec4705": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        336.64,
+        745.51,
+        562.03,
+        1041.07
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-de22c2ac75": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        67.43,
+        2101.52,
+        506.14
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-ead9c90dd8": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        183.09,
+        89.86,
+        774.5,
+        880.44
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-1d1af1f9ce": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        198.2,
+        229.05,
+        567.83,
+        507.29
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-52353d707a": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1426.33,
+        28.43,
+        1781.1,
+        982.49
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-012d44ac5c": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        591.15,
+        437.91,
+        639.16,
+        471.38
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "T",
+      "ocr_confidence": 0.094901,
+      "comment": "",
+      "notes": ""
+    },
+    "p014-b2cd4a381a": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1886.95,
+        404.94,
+        1923.15,
+        435.09
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "i",
+      "ocr_confidence": 0.145845,
+      "comment": "",
+      "notes": ""
+    }
+  },
+  "pdf_page_size_points": [
+    2592,
+    1728
+  ],
+  "missed_annotations": {},
+  "instructions": "For each ID, set decision to accepted or rejected. For a corrected positive, set decision=accepted and optionally corrected_label or corrected_bbox_pdf. recognized_text and ocr_confidence are OCR output, separate from the visual class. Add objects the model missed under missed_annotations using a unique key, class_name, bbox_pdf, and optional corrected_text/comment/notes. Open misses count as -1 and become training labels; a later matching detection marks them recovered. Add comments or notes without changing the ID. Rerun training to incorporate feedback."
+}

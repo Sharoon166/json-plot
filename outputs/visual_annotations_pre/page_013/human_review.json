@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "page_number": 13,
+  "annotations": {
+    "p013-eff0b0b35c": {
+      "decision": "rejected",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        140.56,
+        745.51,
+        589.25,
+        987.36
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "I o e R | e e I e s BED SEALANT — iy o 0 | Y 2!",
+      "ocr_confidence": 0.248097,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-8c43d6b558": {
+      "decision": "rejected",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        891.42,
+        1091.1,
+        1340.84,
+        1629.24
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-ae0ed80fe9": {
+      "decision": "accepted",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1722.61,
+        201.95,
+        2148.56,
+        659.57
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-78f66b248b": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        205.31,
+        1081.74,
+        618.09,
+        1553.99
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-d5919378f4": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        118.42,
+        545.81,
+        624.67,
+        972.14
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-15c393f421": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1606.88,
+        799.73,
+        2152.4,
+        1337.56
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-8baed0b56c": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        798.77,
+        81.12,
+        1375.88,
+        896.81
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-a769bbaad8": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        135.4,
+        745.51,
+        587.29,
+        973.91
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-16b0f7d2e7": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        233.02,
+        1731.58,
+        677.32
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-efa4b06455": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1588.01,
+        826.71,
+        1781.72,
+        1277.83
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-40cd9b85be": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        211.82,
+        1870.29,
+        682.02
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p013-e3d7246bbf": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        2397.18,
+        1594.97,
+        2522.15,
+        1672.52
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PROJECT: GR25-0782 SHEET: SD2",
+      "ocr_confidence": 0.784352,
+      "comment": "",
+      "notes": ""
+    }
+  },
+  "pdf_page_size_points": [
+    2592,
+    1728
+  ],
+  "missed_annotations": {},
+  "instructions": "For each ID, set decision to accepted or rejected. For a corrected positive, set decision=accepted and optionally corrected_label or corrected_bbox_pdf. recognized_text and ocr_confidence are OCR output, separate from the visual class. Add objects the model missed under missed_annotations using a unique key, class_name, bbox_pdf, and optional corrected_text/comment/notes. Open misses count as -1 and become training labels; a later matching detection marks them recovered. Add comments or notes without changing the ID. Rerun training to incorporate feedback."
+}

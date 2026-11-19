@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "page_number": 11,
+  "annotations": {
+    "p011-0472406dd1": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1972.42,
+        492.92,
+        2023.9,
+        505.13
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "i",
+      "ocr_confidence": 0.166483,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-97c3e15c0e": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1274.58,
+        567.24,
+        1323.58,
+        587.0
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "N",
+      "ocr_confidence": 0.082271,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-e30da85a60": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1972.75,
+        495.99,
+        2024.85,
+        511.74
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "i",
+      "ocr_confidence": 0.166483,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-ef764874db": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        262.53,
+        773.41,
+        329.13,
+        791.64
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-e452325441": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1957.69,
+        1226.88,
+        2156.2,
+        1575.22
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "; NOTE: TO BE PRIOR TO",
+      "ocr_confidence": 0.757919,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-37e6ab9658": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        860.48,
+        2027.08,
+        1600.0
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-85dea7e0ff": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1064.57,
+        949.08,
+        1773.11,
+        1600.24
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-e0d928fe4e": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1099.65,
+        159.23,
+        1749.71,
+        797.18
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-feb21571f0": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        91.56,
+        60.78,
+        831.81,
+        585.93
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-acd1a6b775": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        416.2,
+        1136.6,
+        878.72,
+        1694.15
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-10cb517e5f": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1333.35,
+        1536.24,
+        1367.61,
+        1567.39
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-895e5fd4c5": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        2401.89,
+        1591.07,
+        2494.44,
+        1661.37
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PROJECT: GR25-0782 SHEET: CD1",
+      "ocr_confidence": 0.778942,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-21ee194fc4": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        262.47,
+        748.68,
+        332.54,
+        792.88
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-804be8aad5": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        263.1,
+        698.95,
+        334.14,
+        767.15
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p011-da97eecbfa": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1173.21,
+        754.35,
+        1206.95,
+        787.66
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    }
+  },
+  "pdf_page_size_points": [
+    2592,
+    1728
+  ],
+  "missed_annotations": {},
+  "instructions": "For each ID, set decision to accepted or rejected. For a corrected positive, set decision=accepted and optionally corrected_label or corrected_bbox_pdf. recognized_text and ocr_confidence are OCR output, separate from the visual class. Add objects the model missed under missed_annotations using a unique key, class_name, bbox_pdf, and optional corrected_text/comment/notes. Open misses count as -1 and become training labels; a later matching detection marks them recovered. Add comments or notes without changing the ID. Rerun training to incorporate feedback."
+}

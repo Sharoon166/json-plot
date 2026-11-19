@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "page_number": 10,
+  "annotations": {
+    "p010-16e7e71f06": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1824.95,
+        1528.69,
+        1864.4,
+        1550.0
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-9fe2a19321": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        830.15,
+        1017.76,
+        870.58,
+        1039.05
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-524826d921": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1346.64,
+        1527.51,
+        1388.95,
+        1550.31
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "G&D",
+      "ocr_confidence": 0.013147,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-1e1a12af13": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1270.7,
+        374.58,
+        1292.99,
+        390.94
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "]",
+      "ocr_confidence": 0.471197,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-44126c3a07": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        293.56,
+        1018.22,
+        329.78,
+        1036.91
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "&",
+      "ocr_confidence": 0.742296,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-a4c2db145f": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        811.89,
+        363.66,
+        834.07,
+        381.71
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-4e82364891": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1265.56,
+        1460.96,
+        1287.13,
+        1476.94
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "k3",
+      "ocr_confidence": 0.081897,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-9f78534aa4": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1646.25,
+        745.51,
+        1872.48,
+        1064.46
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "18/23.220 ARCHITECTURAL REF. 24 G.S. = 'FG2.1° (1) STOREFRONT TYPE 1/4\" DOORS OTHERS TEMPERED GLASS IN BY 17/A3.220 ARCHITECTURAL REF.: . [N CS.",
+      "ocr_confidence": 0.6553,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-a52c2561ad": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1381.96,
+        1569.53,
+        1409.58,
+        1589.52
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "(2)",
+      "ocr_confidence": 0.91863,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-ec0b3d7674": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        981.03,
+        1530.11,
+        1018.58,
+        1547.16
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "G",
+      "ocr_confidence": 0.529138,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-05393def0d": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        882.54,
+        1529.22,
+        920.71,
+        1547.78
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "@D",
+      "ocr_confidence": 0.350734,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-7b790b7e92": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        932.76,
+        1528.5,
+        974.52,
+        1548.18
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "D",
+      "ocr_confidence": 0.466592,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-4d9b30d4dc": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1688.35,
+        668.62,
+        1876.68,
+        971.74
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "(51) °N’ STOREFRONT TYPE 1/47 TEMPERED GLASS IN DOORS BY OTHERS 18/23.220 ARCHITECTURAL REF. 24 G.S. = 'FG2.1° STOREFRONT TYPE 1/4\" DOORS OTHERS TEMPERED GLASS IN BY",
+      "ocr_confidence": 0.726432,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-c00b422416": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        781.18,
+        1528.11,
+        821.17,
+        1549.39
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "@D",
+      "ocr_confidence": 0.773265,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-2bbed40091": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        831.23,
+        1528.53,
+        871.66,
+        1547.15
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "@D",
+      "ocr_confidence": 0.817254,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-c337e72e33": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1788.08,
+        1019.07,
+        1826.75,
+        1037.52
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-43b3cf9527": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1239.75,
+        1018.42,
+        1276.87,
+        1039.26
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-675d67ce01": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        398.11,
+        1018.2,
+        434.7,
+        1037.23
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "o",
+      "ocr_confidence": 0.100576,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-b6160b458b": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        2019.16,
+        1216.1,
+        2180.07,
+        1593.8
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "REQ'D REQ'D",
+      "ocr_confidence": 0.713921,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-440439a364": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        616.11,
+        1051.06,
+        983.04,
+        1663.74
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-0b4bb5ce33": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        178.38,
+        507.99,
+        557.91,
+        979.02
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-95282c4374": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        798.79,
+        1159.39,
+        1095.78,
+        1655.33
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-1df3b1ef75": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1104.68,
+        1139.71,
+        1532.06,
+        1664.03
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-0c12402ef5": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        144.13,
+        745.67,
+        591.93,
+        1249.78
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-b349a60dba": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        798.72,
+        522.83,
+        1038.36,
+        944.94
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-97d3cccc8c": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1630.78,
+        1056.69,
+        2048.74,
+        1596.94
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-4003aeb327": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        172.33,
+        1106.74,
+        668.82,
+        1659.53
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-a50870ed37": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        691.63,
+        1149.21,
+        981.96,
+        1428.87
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p010-45ad1915de": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        655.43,
+        503.0,
+        983.04,
+        982.49
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    }
+  },
+  "pdf_page_size_points": [
+    2592,
+    1728
+  ],
+  "instructions": "For each ID, set decision to accepted or rejected. For a corrected positive, set decision=accepted and optionally corrected_label or corrected_bbox_pdf. recognized_text and ocr_confidence are OCR output, separate from the visual class. Add comments or notes without changing the ID. Rerun training to incorporate feedback."
+}

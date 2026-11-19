@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "page_number": 1,
+  "annotations": {
+    "04_data_out.json:verified_sheets:0": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1956.12,
+        720.57,
+        1991.64,
+        728.97
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "C1C3",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:1": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1949.64,
+        756.81,
+        1999.08,
+        765.21
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "FP1FP2",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:2": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1944.12,
+        792.81,
+        2003.64,
+        801.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CW1CW2",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:3": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1948.2,
+        828.81,
+        1999.32,
+        837.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SE1SE2",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:4": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1961.16,
+        864.57,
+        1985.64,
+        873.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ME1",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:5": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1961.64,
+        901.05,
+        1985.16,
+        909.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CD1",
+      "comment": ""
+    },
+    "04_data_out.json:verified_sheets:6": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1947.72,
+        937.29,
+        1999.56,
+        945.93
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SD1SD4",
+      "comment": ""
+    },
+    "04_data_out.json:verified_from_index:0": {
+      "decision": "accepted",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        2395.58,
+        1583.41,
+        2518.55,
+        1671.39
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "C1",
+      "comment": ""
+    }
+  },
+  "missed_annotations": {},
+  "pdf_page_size_points": [
+    2592.0,
+    1728.0
+  ]
+}

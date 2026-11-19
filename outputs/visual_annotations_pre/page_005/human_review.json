@@ -1,0 +1,1483 @@
+{
+  "schema_version": 1,
+  "page_number": 5,
+  "annotations": {
+    "p005-655ac3e09f": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1394.52,
+        653.37,
+        1438.81,
+        670.69
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SUPPLY (1614",
+      "ocr_confidence": 0.661766,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-ae259a0a6b": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1440.06,
+        477.6,
+        1489.96,
+        497.25
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ca",
+      "ocr_confidence": 0.8732,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-7e8371f0db": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        732.94,
+        722.97,
+        777.07,
+        741.59
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "LOUNGE. 1401",
+      "ocr_confidence": 0.575233,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-eade08e70b": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1407.46,
+        290.93,
+        1450.36,
+        310.12
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "MDF 1524",
+      "ocr_confidence": 0.657863,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-b6ca625bf3": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        438.41,
+        800.09,
+        481.31,
+        818.34
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "FRE OP 1328",
+      "ocr_confidence": 0.679604,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c5847e3181": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1825.46,
+        1063.62,
+        1864.81,
+        1081.51
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1621 Le21]",
+      "ocr_confidence": 0.377817,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-cf3568a9f8": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        852.7,
+        723.4,
+        895.91,
+        741.96
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "LOUNGE 1018",
+      "ocr_confidence": 0.739408,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-7f04231cd6": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1606.68,
+        875.43,
+        1649.34,
+        890.53
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "[F6001",
+      "ocr_confidence": 0.0,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-de812c4782": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        258.21,
+        287.21,
+        298.57,
+        309.21
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PACU (1307",
+      "ocr_confidence": 0.59953,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-6189d9b826": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        962.96,
+        1356.17,
+        1005.11,
+        1377.05
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "INSURANCE] 1712",
+      "ocr_confidence": 0.719591,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-b235fa32e6": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1305.32,
+        289.65,
+        1344.22,
+        310.24
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "STORAGE (1508",
+      "ocr_confidence": 0.811875,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-08b5b47be2": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1542.03,
+        772.43,
+        1585.53,
+        790.82
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "BATH 1641",
+      "ocr_confidence": 0.856689,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-a478c0cf12": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1329.47,
+        162.02,
+        1381.96,
+        188.72
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "RECEMING 7509 N",
+      "ocr_confidence": 0.507891,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-79b9df512b": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1534.82,
+        292.91,
+        1576.27,
+        309.47
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1526",
+      "ocr_confidence": 0.852074,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-bc18f0c3f0": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        780.39,
+        1193.98,
+        823.91,
+        1213.69
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "HR 07z27)",
+      "ocr_confidence": 0.459805,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c266d57ac7": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        954.31,
+        293.96,
+        995.17,
+        310.05
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1318",
+      "ocr_confidence": 0.947357,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-9eb2acc74e": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1143.39,
+        1355.34,
+        1185.27,
+        1376.74
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ACC 629",
+      "ocr_confidence": 0.721753,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-904c85075a": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1828.27,
+        1184.67,
+        1866.06,
+        1200.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1622",
+      "ocr_confidence": 0.777539,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-52f7528ec7": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1034.86,
+        1043.27,
+        1081.34,
+        1076.19
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "MEL CORRIDOR|",
+      "ocr_confidence": 0.190066,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-fedc55a7d3": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        954.78,
+        391.34,
+        997.07,
+        408.78
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "[13008]",
+      "ocr_confidence": 0.478308,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c2871d37fa": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1055.91,
+        955.85,
+        1095.59,
+        981.55
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "7500",
+      "ocr_confidence": 0.288254,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-82d148f7b4": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        765.91,
+        265.61,
+        805.61,
+        286.43
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ROOM 131",
+      "ocr_confidence": 0.738826,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-be12d47aac": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        798.99,
+        514.86,
+        820.27,
+        533.63
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1321",
+      "ocr_confidence": 0.288408,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-fa5ab4c5b6": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        353.55,
+        799.04,
+        399.68,
+        818.16
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PRE_OP 1329",
+      "ocr_confidence": 0.761994,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-1df5c9314f": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1769.35,
+        572.94,
+        1808.18,
+        592.59
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "UINEN 1517)",
+      "ocr_confidence": 0.178954,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-a7b00219e2": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        950.1,
+        731.5,
+        996.63,
+        755.63
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ON_CALL 1412",
+      "ocr_confidence": 0.68078,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-84a06718d2": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1108.67,
+        489.72,
+        1147.52,
+        509.02
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1503",
+      "ocr_confidence": 0.837402,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c6501208b9": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1679.23,
+        736.64,
+        1720.5,
+        748.7
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-33deca9ebf": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        296.49,
+        683.35,
+        341.35,
+        704.93
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CORRIDOR 13001",
+      "ocr_confidence": 0.874766,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-ba71e4b6c7": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        865.94,
+        512.15,
+        908.34,
+        532.29
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "STORAGE 1319",
+      "ocr_confidence": 0.706244,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5e67cee10d": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1015.36,
+        873.2,
+        1193.46,
+        1118.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "DICTATION ON _CALL 7411 1409 o7 g 1600 NURSE, ADMIN/ office 7500 QFFICE 608 1609 Toon)1 MET G MR QPEN CNO M, OFFICE OFFICE ICE MEL 1709) 831 1632 CORRIDOR| Gl = INSURANCE] b7",
+      "ocr_confidence": 0.516411,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-4c469429ce": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        889.03,
+        134.43,
+        933.24,
+        145.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-e0a2062ed0": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        951.8,
+        567.64,
+        996.72,
+        583.89
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1404",
+      "ocr_confidence": 0.262975,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-16f981dc15": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1109.18,
+        566.32,
+        1149.05,
+        583.75
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "OFFICE 502",
+      "ocr_confidence": 0.608332,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-9570161b4b": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1452.85,
+        1062.09,
+        1495.78,
+        1082.43
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "NURSE_STATION 637",
+      "ocr_confidence": 0.81252,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-bcf810e8c8": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1127.05,
+        140.87,
+        1166.6,
+        161.88
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "WASH 507",
+      "ocr_confidence": 0.923907,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-8072b1e0d6": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        928.08,
+        490.01,
+        976.43,
+        518.37
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "HSKP. 1323",
+      "ocr_confidence": 0.859137,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-e7d7a40cde": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        693.28,
+        514.51,
+        734.22,
+        533.43
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CONTROL. 1324",
+      "ocr_confidence": 0.46614,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c2d8230054": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1297.11,
+        964.66,
+        1341.15,
+        983.09
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SUBWAIT 1611)",
+      "ocr_confidence": 0.742445,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-01051eeaba": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        854.34,
+        812.89,
+        893.81,
+        840.07
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "018",
+      "ocr_confidence": 0.266778,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-aafc2398cc": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1522.92,
+        1356.89,
+        1564.3,
+        1376.21
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ACC 1624",
+      "ocr_confidence": 0.867975,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-b2d353285a": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        616.51,
+        798.62,
+        654.05,
+        819.11
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "£QUIP 1326",
+      "ocr_confidence": 0.634797,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-36ae97bcc4": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        615.26,
+        517.01,
+        659.65,
+        546.37
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CORRIDOR, 1300¢]",
+      "ocr_confidence": 0.287939,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-f57ebf338a": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        701.19,
+        814.84,
+        738.47,
+        837.91
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "D",
+      "ocr_confidence": 0.545418,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-608fcda853": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        297.36,
+        511.55,
+        343.08,
+        532.44
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "STATION 133",
+      "ocr_confidence": 0.882332,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-e728d43768": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        871.79,
+        1192.66,
+        918.34,
+        1211.99
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "INSURANCE [7z3)",
+      "ocr_confidence": 0.421556,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-2d43b76976": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1113.94,
+        198.79,
+        1152.37,
+        218.97
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ROOM 506",
+      "ocr_confidence": 0.89008,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-cdf419d7da": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1825.0,
+        799.34,
+        1867.45,
+        817.8
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SEMI—PRIVATE 1618 feis]",
+      "ocr_confidence": 0.434493,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-0e14c8555d": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1123.31,
+        372.76,
+        1165.41,
+        401.34
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "3008}",
+      "ocr_confidence": 0.232433,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-f57ec9c21e": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1397.18,
+        1358.19,
+        1440.52,
+        1377.33
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PRIVATE 1627",
+      "ocr_confidence": 0.929284,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-86b591c893": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        933.09,
+        1052.63,
+        975.21,
+        1081.33
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "QPEN OFFICE 1709)",
+      "ocr_confidence": 0.742195,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-8ce94408fe": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        387.28,
+        480.59,
+        429.2,
+        496.88
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1333",
+      "ocr_confidence": 0.921107,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-7e299fa5bb": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1677.03,
+        1217.45,
+        1718.77,
+        1238.69
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5468333e4a": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        695.24,
+        1006.59,
+        738.55,
+        1022.53
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1707",
+      "ocr_confidence": 0.939345,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-f4386cf1c6": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1701.28,
+        290.53,
+        1745.38,
+        309.89
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ELECTRIC 1527",
+      "ocr_confidence": 0.898359,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-a3086c17e4": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        952.15,
+        641.23,
+        982.72,
+        668.16
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "ON CALL 1413",
+      "ocr_confidence": 0.274921,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-f20a716189": {
+      "decision": "pending",
+      "class_name": "tag",
+      "corrected_label": null,
+      "bbox_pdf": [
+        777.27,
+        512.23,
+        818.73,
+        531.9
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "WORK 1321",
+      "ocr_confidence": 0.588871,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-ac428a0e68": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        64.76,
+        2275.88,
+        978.64
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-1caed167b0": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        932.68,
+        745.51,
+        1443.85,
+        1171.21
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-ad528a3856": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        238.86,
+        869.73,
+        973.0,
+        1512.36
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5eac42635d": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1597.44,
+        1160.39,
+        1946.09,
+        1573.63
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5115fe176e": {
+      "decision": "pending",
+      "class_name": "callout_area",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1387.45,
+        583.67,
+        1626.44,
+        848.7
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5fc0f40e1f": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        956.8,
+        1568.27,
+        1023.52,
+        1631.45
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "2 ARCH.",
+      "ocr_confidence": 0.620899,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-80a0ed1c6e": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        932.42,
+        1032.98,
+        976.05,
+        1082.27
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "MR QPEN OFFICE 1709)",
+      "ocr_confidence": 0.76444,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c8a00888ca": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        529.98,
+        919.21,
+        597.03,
+        981.95
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "| STORAGE 1703 {",
+      "ocr_confidence": 0.848024,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-d8dc8bdf26": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1371.24,
+        495.75,
+        1435.56,
+        544.67
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-b2cb681324": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1971.94,
+        1254.4,
+        2022.76,
+        1308.88
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-97555eba24": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1435.76,
+        767.26,
+        1497.87,
+        839.56
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "39 LT ] 1642",
+      "ocr_confidence": 0.645761,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-3ad898e7fa": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        694.64,
+        1105.04,
+        737.92,
+        1153.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "copy/ WORK 1726",
+      "ocr_confidence": 0.795034,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-458ecc9987": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1028.35,
+        872.26,
+        1092.42,
+        919.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-6ef994864c": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        678.46,
+        1249.5,
+        738.3,
+        1302.3
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "728 M\"é’\\ 1716,",
+      "ocr_confidence": 0.478847,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-c28e218dec": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        798.23,
+        940.52,
+        845.57,
+        981.84
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "MR OFFICE 1707",
+      "ocr_confidence": 0.74994,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-dadd27a8ec": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        607.77,
+        639.15,
+        660.62,
+        713.55
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "3000 .2 MET",
+      "ocr_confidence": 0.313611,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-2beece8c63": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        956.55,
+        1570.46,
+        982.58,
+        1630.87
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "2",
+      "ocr_confidence": 0.966627,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-f7a12d21bf": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1529.34,
+        914.48,
+        1594.41,
+        980.7
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-111b45cc35": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        939.26,
+        762.04,
+        1012.14,
+        819.57
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "1412 DICTATION 7411",
+      "ocr_confidence": 0.517977,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-0b16dcd60a": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        889.78,
+        854.84,
+        982.14,
+        918.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "018",
+      "ocr_confidence": 0.266778,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-d7dd390e47": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        994.36,
+        462.2,
+        1057.02,
+        509.76
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "= ON CALL TUT/SHWR [1408]",
+      "ocr_confidence": 0.68443,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-0d7483bd04": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        921.7,
+        1510.14,
+        946.09,
+        1536.71
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-5c2eb27ad5": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1275.83,
+        694.6,
+        1358.57,
+        747.85
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CLEAN HOLD 1623",
+      "ocr_confidence": 0.907192,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-fefcf9a295": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        802.75,
+        961.07,
+        844.63,
+        981.59
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "OFFICE 1707",
+      "ocr_confidence": 0.806419,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-72bcf6604e": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1117.7,
+        760.25,
+        1179.46,
+        811.39
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "7408 ON _CALL 1409",
+      "ocr_confidence": 0.365302,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-bc3d2b06e1": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        609.51,
+        668.62,
+        651.17,
+        712.99
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": ".2 MET",
+      "ocr_confidence": 0.337077,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-b9f995dcb3": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1971.76,
+        934.64,
+        2022.21,
+        982.21
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-62a6f0f570": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1837.95,
+        276.4,
+        1901.27,
+        309.92
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "EMERGENCY| ELECTRIC 1514)",
+      "ocr_confidence": 0.51952,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-e00b347f47": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        258.58,
+        283.89,
+        299.99,
+        308.12
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "PACU (1307",
+      "ocr_confidence": 0.59953,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-412037c48d": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1974.35,
+        750.14,
+        2020.97,
+        794.52
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-1b4123b1e7": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        616.05,
+        774.76,
+        658.17,
+        819.3
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "CLEAN £QUIP 1326",
+      "ocr_confidence": 0.726246,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-0cd83e806d": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        1212.26,
+        657.89,
+        1257.93,
+        703.92
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "52 \\MEV",
+      "ocr_confidence": 0.280767,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-1c8555ae84": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        765.95,
+        1443.71,
+        807.3,
+        1461.91
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "",
+      "ocr_confidence": null,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-8683dc48e9": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        543.84,
+        1417.78,
+        604.8,
+        1462.97
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "=",
+      "ocr_confidence": 0.956997,
+      "comment": "",
+      "notes": ""
+    },
+    "p005-fdb82f9721": {
+      "decision": "pending",
+      "class_name": "reference",
+      "corrected_label": null,
+      "bbox_pdf": [
+        731.04,
+        693.16,
+        779.18,
+        741.77
+      ],
+      "corrected_bbox_pdf": null,
+      "recognized_text": "SHARED STAFF. LOUNGE. 1401",
+      "ocr_confidence": 0.543037,
+      "comment": "",
+      "notes": ""
+    }
+  },
+  "pdf_page_size_points": [
+    2592,
+    1728
+  ],
+  "instructions": "For each ID, set decision to accepted or rejected. For a corrected positive, set decision=accepted and optionally corrected_label or corrected_bbox_pdf. recognized_text and ocr_confidence are OCR output, separate from the visual class. Add comments or notes without changing the ID. Rerun training to incorporate feedback."
+}

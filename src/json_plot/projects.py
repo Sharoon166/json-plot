@@ -15,7 +15,7 @@ from json_plot.config import (
 
 REGISTRY_DIR = Path.home() / ".local" / "share" / "json-plot"
 REGISTRY_FILE = REGISTRY_DIR / "projects.json"
-SOURCE_KEYS = ("training_pdf", "schedule_data", "schedule_outputs", "reference_data", "annotation_pdf")
+PDF_KEYS = ("training_pdf", "annotation_pdf")
 
 
 def slugify(value: str) -> str:
@@ -91,7 +91,10 @@ class ProjectLibrary:
             "name": project["name"],
             "root": str(root),
             "output_dir": str(root / "outputs"),
-            "sources": {key: str(sources[key].expanduser().resolve()) for key in SOURCE_KEYS},
+            "sources": {
+                **{key: str(sources[key].expanduser().resolve()) for key in PDF_KEYS},
+                "json_folder": str(sources["json_folder"].expanduser().resolve()),
+            },
         })
         self.projects.append(project)
         self.save()

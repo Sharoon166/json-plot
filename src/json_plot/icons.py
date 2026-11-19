@@ -10,7 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PySide6.QtCore import QByteArray, QStandardPaths, Qt
-from PySide6.QtGui import QIcon, QPainter, QPixmap
+from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
 from PySide6.QtSvg import QSvgRenderer
 
 
@@ -85,3 +85,20 @@ def asset(name: str, color: str) -> str:
     if not path.exists():
         path.write_text(svg_markup(name, color), encoding="utf-8")
     return path.as_posix()
+
+
+LOGO_PATH = Path(__file__).parent / "assets" / "logo.png"
+
+
+def logo_pixmap(color: str, height: int) -> QPixmap:
+    """The app logo recoloured to color, scaled to height with its aspect ratio kept."""
+    source = QPixmap(str(LOGO_PATH))
+    scaled = source.scaledToHeight(height, Qt.TransformationMode.SmoothTransformation)
+    tinted = QPixmap(scaled.size())
+    tinted.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(tinted)
+    painter.drawPixmap(0, 0, scaled)
+    painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
+    painter.fillRect(tinted.rect(), QColor(color))
+    painter.end()
+    return tinted

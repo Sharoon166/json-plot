@@ -6,11 +6,14 @@ from pathlib import Path
 from typing import Any
 
 import pdfplumber
-from PySide6.QtCore import QByteArray, QPointF, QProcess, QProcessEnvironment, QRect, QRectF, Qt, QTimer, Signal
-from PySide6.QtGui import QColor, QFontMetrics, QImage, QPainter, QPen, QPixmap
+from PySide6.QtCore import QByteArray, QEvent, QPointF, QProcess, QProcessEnvironment, QRect, QRectF, Qt, QTimer, Signal
+from PySide6.QtGui import QColor, QFontMetrics, QIcon, QImage, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
     QAbstractItemView,
+    QAbstractSlider,
+    QAbstractSpinBox,
+    QPlainTextEdit,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -32,6 +35,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QSlider,
     QSpinBox,
+    QToolButton,
     QStackedWidget,
     QTextEdit,
     QVBoxLayout,
@@ -51,6 +55,8 @@ from json_plot.graph_view import RelationshipPage
 from json_plot.hitl_coach import detection_brief, page_brief
 from json_plot.hitl_session import LABEL_LEGEND, collect_page_items, pdf_page_count, pdf_page_size
 from json_plot import icons, pdf_render, theme
+from json_plot.json_watch import JsonWatcher, json_file_state, scan_json_folder
+from json_plot.project_detect import detect_sources
 from json_plot.projects import ProjectLibrary, slugify
 from json_plot.qaqc import (
     CATEGORY_LABELS,
@@ -151,6 +157,7 @@ class ReviewCanvas(QWidget):
         self.start_point = None
         self.end_point = None
         self._panning = False
+        self._pan_button = None
         self._pan_last = None
         self.source: tuple[Path, int] | None = None
         self.max_render_width = 4096
@@ -305,8 +312,15 @@ class ReviewCanvas(QWidget):
             painter.drawRect(self.start_point, self.end_point)
 
     def mousePressEvent(self, event) -> None:
-        if event.button() == Qt.MouseButton.MiddleButton:
+        # Middle button always pans. Left button pans when it starts on empty page, not on a box and not while drawing.
+        left_background = (
+            event.button() == Qt.MouseButton.LeftButton
+            and not self.marking
+            and not any(self._detection_rect(d).contains(event.position()) for d in self.detections)
+        )
+        if event.button() == Qt.MouseButton.MiddleButton or left_background:
             self._panning = True
+            self._pan_button = event.button()
             self._pan_last = event.globalPosition().toPoint()
             self.setCursor(Qt.CursorShape.ClosedHandCursor)
             event.accept()
@@ -359,7 +373,7 @@ class ReviewCanvas(QWidget):
         super().leaveEvent(event)
 
     def mouseReleaseEvent(self, event) -> None:
-        if self._panning and event.button() == Qt.MouseButton.MiddleButton:
+        if self._panning and event.button() == self._pan_button:
             self._panning = False
             self._pan_last = None
             self.setCursor(Qt.CursorShape.ArrowCursor)
@@ -444,16 +458,13 @@ class ImageScrollArea(QScrollArea):
 class ProjectCreationDialog(QDialog):
     LABELS = {
         "training_pdf": ("Labeled training PDF", "PDF files (*.pdf)"),
-        "schedule_data": ("Schedule and drawing labels JSON", "JSON files (*.json)"),
-        "schedule_outputs": ("Schedule verification JSON", "JSON files (*.json)"),
-        "reference_data": ("Reference verification JSON", "JSON files (*.json)"),
         "annotation_pdf": ("PDF to annotate", "PDF files (*.pdf)"),
     }
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setWindowTitle("Create visual annotation project")
-        self.setMinimumWidth(660)
+        self.setMinimumWidth(820)
         layout = QVBoxLayout(self)
         form = QFormLayout()
         form.setHorizontalSpacing(18)
@@ -470,12 +481,18 @@ class ProjectCreationDialog(QDialog):
         root_row.addWidget(root_browse)
         form.addRow("Project name", self.name_field)
         form.addRow("Project folder", root_row)
+        self.data_folder_field = QLineEdit(str(Path(PROJECT_ROOT) / "raw-data"))
+        self.data_folder_field.setPlaceholderText("Folder that holds the PDF and JSON files")
+        data_browse = QPushButton("Choose folder")
+        data_browse.clicked.connect(self.choose_data_folder)
+        data_row = QHBoxLayout()
+        data_row.addWidget(self.data_folder_field, 1)
+        data_row.addWidget(data_browse)
+        form.addRow("Data folder", data_row)
         self.source_fields: dict[str, QLineEdit] = {}
+        self.pdf_choosers: dict[str, QComboBox] = {}
         defaults = {
             "training_pdf": TRAINING_PDF_FILE,
-            "schedule_data": Path(PROJECT_ROOT) / "raw-data" / "02_schedule_data.json",
-            "schedule_outputs": Path(PROJECT_ROOT) / "raw-data" / "03_schedule_outputs.json",
-            "reference_data": Path(PROJECT_ROOT) / "raw-data" / "04_data_out.json",
             "annotation_pdf": ANNOTATION_PDF_FILE,
         }
         for key, (label, file_filter) in self.LABELS.items():
@@ -485,10 +502,22 @@ class ProjectCreationDialog(QDialog):
             browse = QPushButton("Browse")
             browse.clicked.connect(lambda checked=False, k=key, f=file_filter: self.choose_file(k, f))
             row.addWidget(field, 1)
+            if key.endswith("pdf"):
+                chooser = QComboBox()
+                chooser.setMinimumWidth(200)
+                chooser.setToolTip("PDFs found in the data folder")
+                chooser.activated.connect(lambda index, k=key: self.source_fields[k].setText(self.pdf_choosers[k].itemData(index)))
+                self.pdf_choosers[key] = chooser
+                row.addWidget(chooser)
+                field.textChanged.connect(lambda text, k=key: self._sync_pdf_chooser(k, text))
             row.addWidget(browse)
             self.source_fields[key] = field
             form.addRow(label, row)
         layout.addLayout(form)
+        self.detect_note = QLabel("Every JSON file in the data folder is loaded. Choose the folder and the PDFs are filled in for you.")
+        self.detect_note.setWordWrap(True)
+        self.detect_note.setObjectName("muted")
+        layout.addWidget(self.detect_note)
         note = QLabel("The selected source files stay where they are. Project outputs and reviews are stored in the project folder.")
         note.setWordWrap(True)
         note.setObjectName("muted")
@@ -498,6 +527,8 @@ class ProjectCreationDialog(QDialog):
         buttons.rejected.connect(self.reject)
         buttons.accepted.connect(self.validate_and_accept)
         layout.addWidget(buttons)
+        if Path(self.data_folder_field.text()).is_dir():
+            self.apply_data_folder(Path(self.data_folder_field.text()))
 
     def choose_root(self) -> None:
         current = Path(self.root_field.text()).expanduser()
@@ -514,6 +545,49 @@ class ProjectCreationDialog(QDialog):
         path, _ = QFileDialog.getOpenFileName(self, "Choose source file", self.source_fields[key].text(), file_filter)
         if path:
             self.source_fields[key].setText(path)
+
+    def choose_data_folder(self) -> None:
+        start = self.data_folder_field.text() or str(Path.home())
+        directory = QFileDialog.getExistingDirectory(self, "Choose the folder with the project files", start)
+        if directory:
+            self.apply_data_folder(Path(directory))
+
+    def apply_data_folder(self, folder: Path) -> None:
+        self.data_folder_field.setText(str(folder))
+        found = detect_sources(folder)
+        if found.is_empty:
+            self.detect_note.setText("No PDF or JSON files were found in that folder. Pick the files by hand below.")
+            return
+        for key, chooser in self.pdf_choosers.items():
+            chooser.blockSignals(True)
+            chooser.clear()
+            for path in found.pdf_candidates.get(key, []):
+                chooser.addItem(path.name, str(path))
+            chooser.blockSignals(False)
+        for key, path in found.guesses.items():
+            if key in self.source_fields:
+                self.source_fields[key].setText(str(path))
+        missing = [self.LABELS[key][0] for key in self.source_fields if key not in found.guesses]
+        lines = [f"Found {len(found.pdfs)} PDF and {len(found.jsons)} JSON files. All JSON files will be loaded."]
+        if found.pdfs and not found.annotation_is_pre:
+            lines.append("No PDF is named '...pre', so the smallest one was picked for annotation. Check it.")
+        elif len(found.pdfs) > 1:
+            lines.append("Several PDFs were found. Check the picks, or choose another from the list.")
+        if missing:
+            lines.append("Not found, pick by hand: " + ", ".join(missing) + ".")
+        self.detect_note.setText(" ".join(lines))
+
+    def _sync_pdf_chooser(self, key: str, text: str) -> None:
+        chooser = self.pdf_choosers.get(key)
+        if chooser is None or not text:
+            return
+        index = chooser.findData(text)
+        if index < 0:
+            chooser.addItem(Path(text).name, text)
+            index = chooser.count() - 1
+        chooser.blockSignals(True)
+        chooser.setCurrentIndex(index)
+        chooser.blockSignals(False)
 
     def validate_and_accept(self) -> None:
         name = self.name_field.text().strip()
@@ -537,24 +611,18 @@ class ProjectCreationDialog(QDialog):
         if invalid_types:
             QMessageBox.warning(self, "Check source file types", "Expected PDF/JSON file extensions for:\n\n" + "\n".join(invalid_types))
             return
-        invalid_json = []
-        for key in ("schedule_data", "schedule_outputs", "reference_data"):
-            try:
-                value = json.loads(Path(self.source_fields[key].text()).read_text(encoding="utf-8"))
-                if not isinstance(value, dict):
-                    invalid_json.append(self.LABELS[key][0])
-            except (OSError, json.JSONDecodeError):
-                invalid_json.append(self.LABELS[key][0])
-        if invalid_json:
-            QMessageBox.warning(self, "Invalid learning JSON", "Each learning JSON must contain a valid page-keyed object:\n\n" + "\n".join(invalid_json))
+        if not scan_json_folder(Path(self.data_folder_field.text()).expanduser()):
+            QMessageBox.warning(self, "No JSON files", "The data folder has no JSON files to load.")
             return
         self.accept()
 
     def project_values(self) -> tuple[str, Path, dict[str, Path]]:
+        sources = {key: Path(field.text()).expanduser() for key, field in self.source_fields.items()}
+        sources["json_folder"] = Path(self.data_folder_field.text()).expanduser()
         return (
             self.name_field.text().strip(),
             Path(self.root_field.text()).expanduser(),
-            {key: Path(field.text()).expanduser() for key, field in self.source_fields.items()},
+            sources,
         )
 
 
@@ -582,8 +650,19 @@ class WorkflowWindow(QMainWindow):
         self.qaqc_progress: dict[str, dict[str, int]] = {}
         self.undo_stack: list[tuple[Path, str, str, str]] = []
         self.kept_marks: set[tuple] = set()
+        self.json_folder: Path | None = None  # Folder the JSON dropdown lists
+        self.json_files: list[Path] = []  # Every JSON found in that folder
+        self.viewed_json: Path | None = None  # None means show all loaded JSON
+        self.packet_mode = False  # True when the folder is a QAQC packet, which uses its own file filter
+        self._seen_json: dict[Path, tuple[int, int] | None] = {}  # File state the page last read
+        self.json_watcher = JsonWatcher(parent=self)
+        self.json_watcher.file_settled.connect(self._on_json_file_settled)
+        self.json_watcher.folder_changed.connect(self._on_json_folder_changed)
         self._build_ui()
         theme.decorate(self)
+        self.setWindowIcon(QIcon(icons.logo_pixmap(theme.token("text"), 256)))
+        self.setAcceptDrops(True)
+        QApplication.instance().installEventFilter(self)
         theme.manager().changed.connect(self._on_theme_changed)
         self.image_view.zoom_changed.connect(self.sync_zoom_controls)
         self.canvas.box_created.connect(self.add_drawn_box)
@@ -599,13 +678,14 @@ class WorkflowWindow(QMainWindow):
 
         self.sidebar = QWidget()
         self.sidebar.setObjectName("sidebar")
-        self.sidebar.setFixedWidth(96)
+        self.sidebar.setFixedWidth(176)
         side_layout = QVBoxLayout(self.sidebar)
         side_layout.setContentsMargins(8, 12, 8, 10)
         side_layout.setSpacing(4)
-        self.brand = QLabel("JSON\nPlot")
+        self.brand = QLabel()
         self.brand.setObjectName("brand")
         self.brand.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.brand.setToolTip(theme.APP_NAME)
         side_layout.addWidget(self.brand)
         side_layout.addSpacing(12)
         self.nav_buttons = []
@@ -634,11 +714,19 @@ class WorkflowWindow(QMainWindow):
         self.appearance_combo.setToolTip("Appearance")
         self.appearance_combo.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
         self.appearance_combo.setMinimumContentsLength(1)
+        self.appearance_combo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         for mode in theme.MODES:
             self.appearance_combo.addItem(icons.icon(theme.MODE_ICONS[mode], theme.token("text_muted")), theme.MODE_LABELS[mode], mode)
         self.appearance_combo.setCurrentIndex(theme.MODES.index(theme.manager().mode))
         self.appearance_combo.currentIndexChanged.connect(self._change_appearance)
         side_layout.addWidget(self.appearance_combo)
+        # Collapsed sidebar: one icon button that cycles System, Light, Dark.
+        self.appearance_cycle = QToolButton()
+        self.appearance_cycle.setObjectName("sidebarToggle")
+        self.appearance_cycle.setFixedSize(40, 30)
+        self.appearance_cycle.clicked.connect(self._cycle_appearance)
+        self.appearance_cycle.hide()
+        side_layout.addWidget(self.appearance_cycle, 0, Qt.AlignmentFlag.AlignHCenter)
         side_layout.addSpacing(6)
         self._pipeline_status_full = "●  Ready"
         self.pipeline_status = QLabel(self._pipeline_status_full)
@@ -777,9 +865,11 @@ class WorkflowWindow(QMainWindow):
         project_id = item.data(Qt.ItemDataRole.UserRole)
         return next((project for project in self.library.projects if project["id"] == project_id), None)
 
-    def create_project(self) -> None:
+    def create_project(self, *_args, folder: Path | None = None) -> None:
         dialog = ProjectCreationDialog(self)
         theme.decorate(dialog)
+        if folder is not None:
+            dialog.apply_data_folder(folder)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return
         name, root, sources = dialog.project_values()
@@ -794,6 +884,52 @@ class WorkflowWindow(QMainWindow):
                 self.project_list.setCurrentRow(row)
                 break
         self.set_project(project)
+
+    def eventFilter(self, obj, event) -> bool:  # noqa: N802 - Qt API
+        if event.type() == QEvent.Type.KeyPress and self.isActiveWindow() and self.stack.currentIndex() == 4:
+            if self._handle_page_key(event):
+                return True
+        return super().eventFilter(obj, event)
+
+    def _handle_page_key(self, event) -> bool:
+        modifiers = event.modifiers()
+        if event.key() == Qt.Key.Key_G and modifiers == Qt.KeyboardModifier.ControlModifier:
+            self.page_number.setFocus()
+            self.page_number.lineEdit().selectAll()
+            return True
+        if modifiers not in (Qt.KeyboardModifier.NoModifier, Qt.KeyboardModifier.KeypadModifier):
+            return False
+        step = {
+            Qt.Key.Key_Left.value: -1,
+            Qt.Key.Key_PageUp.value: -1,
+            Qt.Key.Key_Right.value: 1,
+            Qt.Key.Key_PageDown.value: 1,
+        }.get(event.key())
+        if step is None or self._focus_takes_arrows():
+            return False
+        self._step_page(step)
+        return True
+
+    def _focus_takes_arrows(self) -> bool:
+        # Text boxes, spin boxes, lists and combos use the arrow keys for themselves.
+        return isinstance(
+            QApplication.focusWidget(),
+            (QLineEdit, QAbstractSpinBox, QTextEdit, QPlainTextEdit, QComboBox, QAbstractItemView, QAbstractSlider),
+        )
+
+    def _step_page(self, delta: int) -> None:
+        self.page_number.setValue(self.page_number.value() + delta)  # The spin box clamps to the page range.
+
+    def dragEnterEvent(self, event) -> None:  # noqa: N802 - Qt API
+        urls = event.mimeData().urls()
+        if urls and urls[0].isLocalFile() and Path(urls[0].toLocalFile()).is_dir():
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event) -> None:  # noqa: N802 - Qt API
+        event.acceptProposedAction()
+        self.create_project(folder=Path(event.mimeData().urls()[0].toLocalFile()))
 
     def rename_project(self) -> None:
         project = self.selected_project()
@@ -854,10 +990,17 @@ class WorkflowWindow(QMainWindow):
         self.current_detection = None
         self.preview_cache.clear()
         self.hitl_jsons = []
-        for key in ("schedule_data", "schedule_outputs", "reference_data"):
-            raw = sources.get(key)
-            if raw and Path(raw).is_file():
-                self.hitl_jsons.append(Path(raw))
+        json_folder = Path(sources["json_folder"]) if sources.get("json_folder") else None
+        if json_folder is not None and json_folder.is_dir():
+            self.hitl_jsons = scan_json_folder(json_folder)
+            self._set_json_folder(json_folder)
+        else:
+            # Projects made before the data folder existed list their three JSON files.
+            for key in ("schedule_data", "schedule_outputs", "reference_data"):
+                raw = sources.get(key)
+                if raw and Path(raw).is_file():
+                    self.hitl_jsons.append(Path(raw))
+            self._set_json_folder(self.hitl_jsons[0].parent if self.hitl_jsons else None)
         raw_pdf = sources.get("annotation_pdf")
         self.hitl_pdf = Path(raw_pdf) if raw_pdf else None
         if hasattr(self, "pdf_path") and self.hitl_pdf:
@@ -1071,25 +1214,22 @@ class WorkflowWindow(QMainWindow):
         self.pages.hide()
         for caption, slot, tip in (
             ("PDF", self.choose_pdf, "Choose PDF to review"),
-            ("JSON", self.add_hitl_json, "Add JSON files with labels/data"),
-            ("Remove JSON", self.remove_hitl_json, "Remove selected JSON from loaded data"),
+            ("JSON folder", self.choose_json_folder, "Load every JSON file in a folder"),
+            ("Remove JSON", self.remove_hitl_json, "Remove the JSON picked in the dropdown from the loaded set"),
         ):
             button = QPushButton(caption)
             button.setObjectName("compactButton")
             button.setToolTip(tip)
             button.clicked.connect(slot)
             controls.addWidget(button)
-        self.page_number = QSpinBox()
+        self.page_number = QSpinBox()  # Lives in the bottom bar, between the page arrows
         self.page_number.setRange(1, 9999)
         self.page_number.setValue(1)
-        self.page_number.setObjectName("compactSpin")
-        self.page_number.setToolTip("Page number")
         self.page_number.valueChanged.connect(self.load_hitl_page)
-        controls.addWidget(self.page_number)
-        self.refresh_button = QPushButton("↻")
+        self.refresh_button = QPushButton("↻ Reload")
         self.refresh_button.setObjectName("compactButton")
-        self.refresh_button.setToolTip("Reload this page from the JSON")
-        self.refresh_button.clicked.connect(self.load_hitl_page)
+        self.refresh_button.setToolTip("Reload every loaded JSON from disk and redraw this page")
+        self.refresh_button.clicked.connect(self.reload_json_now)
         controls.addWidget(self.refresh_button)
         self.annotate_button = QPushButton("Run page")
         self.annotate_button.setObjectName("compactButton")
@@ -1125,18 +1265,20 @@ class WorkflowWindow(QMainWindow):
         files_layout = QVBoxLayout(files_panel)
         files_layout.setContentsMargins(0, 0, 0, 0)
         files_layout.setSpacing(2)
-        files_title = QLabel("Loaded data")
+        files_header = QHBoxLayout()
+        files_header.setSpacing(4)
+        files_title = QLabel("JSON file")
         files_title.setObjectName("caption")
-        files_layout.addWidget(files_title)
-        self.hitl_json_list = QListWidget()
-        self.hitl_json_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.hitl_json_list.setUniformItemSizes(True)
-        self.hitl_json_list.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.hitl_json_list.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.hitl_json_list.setMaximumHeight(72)
-        self.hitl_json_list.setMinimumHeight(40)
-        self.hitl_json_list.setToolTip("JSON files currently fed into the viewer. Select one and click Remove JSON to unload it.")
-        files_layout.addWidget(self.hitl_json_list)
+        files_header.addWidget(files_title)
+        self.json_select = QComboBox()
+        self.json_select.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+        self.json_select.setMinimumContentsLength(16)
+        self.json_select.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        self.json_select.setToolTip("Choose which JSON file the page shows. All loaded shows every JSON that is loaded.")
+        self.json_select.currentIndexChanged.connect(self._on_json_view_changed)
+        files_header.addWidget(self.json_select)
+        files_header.addStretch(1)
+        files_layout.addLayout(files_header)
         self.hitl_pdf_label = ElidedLabel("No PDF loaded")
         self.hitl_pdf_label.setObjectName("muted")
         files_layout.addWidget(self.hitl_pdf_label)
@@ -1237,18 +1379,17 @@ class WorkflowWindow(QMainWindow):
         self.zoom_slider.valueChanged.connect(lambda value: self.image_view.set_zoom(value / 100))
         self.zoom_label = QLabel("100%")
         self.zoom_label.setMinimumWidth(38)
-        self.fit_button = QPushButton("Fit")
+        self.fit_button = QPushButton()
         self.fit_button.setObjectName("compactButton")
+        self.fit_button.setToolTip("Fit to view")
+        theme.set_icon(self.fit_button, "maximize", size=16)
         self.fit_button.clicked.connect(self.image_view.fit_to_view)
         self.actual_size_button = QPushButton("100%")
         self.actual_size_button.setObjectName("compactButton")
         self.actual_size_button.clicked.connect(lambda: self.image_view.set_zoom(1.0))
-        for widget in (self.zoom_out_button, self.zoom_in_button, self.zoom_slider, self.zoom_label, self.fit_button, self.actual_size_button):
-            zoom_row.addWidget(widget)
         max_render_label = QLabel("Max render")
         max_render_label.setObjectName("caption")
         max_render_label.setToolTip("Maximum pixel width used to rasterise PDF pages")
-        zoom_row.addWidget(max_render_label)
         self.max_render_spin = QSpinBox()
         self.max_render_spin.setObjectName("compactSpin")
         self.max_render_spin.setRange(512, 8192)
@@ -1257,8 +1398,35 @@ class WorkflowWindow(QMainWindow):
         self.max_render_spin.setSuffix(" px")
         self.max_render_spin.setToolTip("Maximum pixel width used to rasterise PDF pages. Higher is sharper but uses more memory.")
         self.max_render_spin.valueChanged.connect(self.canvas.set_max_render_width)
+        zoom_row.addWidget(max_render_label)
         zoom_row.addWidget(self.max_render_spin)
         zoom_row.addStretch(1)
+        self.prev_page_button = QPushButton()
+        self.prev_page_button.setObjectName("compactButton")
+        self.prev_page_button.setToolTip("Previous page (Left arrow or Page Up)")
+        theme.set_icon(self.prev_page_button, "chevron-left", size=16)
+        self.prev_page_button.clicked.connect(lambda: self._step_page(-1))
+        self.next_page_button = QPushButton()
+        self.next_page_button.setObjectName("compactButton")
+        self.next_page_button.setToolTip("Next page (Right arrow or Page Down)")
+        theme.set_icon(self.next_page_button, "chevron-right", size=16)
+        self.next_page_button.clicked.connect(lambda: self._step_page(1))
+        self.page_number.setObjectName("pageNumber")
+        self.page_number.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.page_number.setPrefix("Page ")
+        self.page_number.setSuffix(" / –")
+        self.page_number.setMinimumWidth(130)
+        self.page_number.setToolTip("Type a page number, then press Enter. Ctrl+G jumps to the box.")
+        self.page_number.setKeyboardTracking(False)  # Load the page on Enter, not on every keystroke.
+        page_nav = QHBoxLayout()
+        page_nav.setSpacing(4)
+        page_nav.addWidget(self.prev_page_button)
+        page_nav.addWidget(self.page_number)
+        page_nav.addWidget(self.next_page_button)
+        zoom_row.addLayout(page_nav)
+        zoom_row.addStretch(1)
+        for widget in (self.zoom_out_button, self.zoom_in_button, self.zoom_slider, self.zoom_label, self.fit_button, self.actual_size_button):
+            zoom_row.addWidget(widget)
         preview_layout.addLayout(zoom_row)
         review_layout.addWidget(preview_panel, 1)
         layout.addLayout(review_layout, 1)
@@ -1268,12 +1436,23 @@ class WorkflowWindow(QMainWindow):
         self.sidebar_collapsed = not self.sidebar_collapsed
         self._apply_sidebar_state()
 
+    def _cycle_appearance(self) -> None:
+        index = theme.MODES.index(theme.manager().mode)
+        theme.manager().set_mode(theme.MODES[(index + 1) % len(theme.MODES)])
+
+    def _refresh_appearance_cycle(self) -> None:
+        mode = theme.manager().mode
+        self.appearance_cycle.setIcon(icons.icon(theme.MODE_ICONS[mode], theme.token("text_muted"), 16))
+        self.appearance_cycle.setToolTip(f"Appearance: {theme.MODE_LABELS[mode]}. Click to change.")
+
     def _apply_sidebar_state(self) -> None:
         collapsed = self.sidebar_collapsed
-        self.sidebar.setFixedWidth(56 if collapsed else 96)
+        self.appearance_combo.setVisible(not collapsed)
+        self.appearance_cycle.setVisible(collapsed)
+        self._refresh_appearance_cycle()
+        self.sidebar.setFixedWidth(56 if collapsed else 176)
         theme.set_property(self.sidebar, "collapsed", "true" if collapsed else "false")
-        self.brand.setText("JP" if collapsed else "JSON\nPlot")
-        self.brand.setToolTip("JSON Plot" if collapsed else "")
+        self._refresh_brand()
         self.sidebar_toggle.setToolTip("Expand sidebar" if collapsed else "Collapse sidebar")
         theme.set_icon(self.sidebar_toggle, "panel-left-open" if collapsed else "panel-left-close", size=16)
         for button, title in zip(self.nav_buttons, self.nav_titles):
@@ -1283,14 +1462,24 @@ class WorkflowWindow(QMainWindow):
         for index, mode in enumerate(theme.MODES):
             self.appearance_combo.setItemText(index, "" if collapsed else theme.MODE_LABELS[mode])
         self.appearance_combo.setMinimumContentsLength(0 if collapsed else 1)
-        self.appearance_combo.setFixedWidth(40 if collapsed else 80)
+        if collapsed:
+            self.appearance_combo.setFixedWidth(40)
+        else:
+            self.appearance_combo.setMinimumWidth(0)
+            self.appearance_combo.setMaximumWidth(16777215)
         self.appearance_combo.blockSignals(False)
         self.pipeline_status.setText("●" if collapsed else self._pipeline_status_full)
         self.pipeline_status.setToolTip(self._pipeline_status_full if collapsed else "")
 
+    def _refresh_brand(self) -> None:
+        height = 28 if self.sidebar_collapsed else 44
+        self.brand.setPixmap(icons.logo_pixmap(theme.token("text"), height))
+
     def _on_theme_changed(self, _scheme: str) -> None:
         # Custom painters cache nothing colour-related, so a repaint is enough.
         theme.refresh_icons(self)
+        self._refresh_brand()
+        self._refresh_appearance_cycle()
         self.appearance_combo.blockSignals(True)
         for index, mode in enumerate(theme.MODES):
             self.appearance_combo.setItemIcon(index, icons.icon(theme.MODE_ICONS[mode], theme.token("text_muted")))
@@ -1317,19 +1506,15 @@ class WorkflowWindow(QMainWindow):
             QTimer.singleShot(0, self.relationship_page.canvas_fit)
 
     def _load_relationships(self) -> None:
-        json_paths = list(self.hitl_jsons)
-        for path in list(json_paths):
-            ocr = path.with_name("01_ocr_word_dict.json")
-            if ocr.is_file() and ocr not in json_paths:
-                json_paths.append(ocr)
         pdf_paths = [self.hitl_pdf] if self.hitl_pdf and self.hitl_pdf.is_file() else []
         output = self.project_settings.get("output_dir")
         self.relationship_page.set_inputs(
-            json_paths,
+            self._relationship_inputs(),
             pdf_paths,
             Path(output) if output else self.output_dir,
         )
         self._sync_hitl_files()
+        self._remember_json_state()
 
     def log(self, text: str) -> None:
         if text:
@@ -1415,24 +1600,111 @@ class WorkflowWindow(QMainWindow):
             self._load_relationships()
             self.load_hitl_page()
 
-    def add_hitl_json(self) -> None:
-        start = str(self.hitl_jsons[-1].parent) if self.hitl_jsons else str(self.project_root)
-        paths, _ = QFileDialog.getOpenFileNames(self, "Add JSON", start, "JSON files (*.json)")
-        existing = {str(path) for path in self.hitl_jsons}
-        for raw in paths:
-            if raw not in existing:
-                self.hitl_jsons.append(Path(raw))
-        if paths:
-            self._load_relationships()
-            self.load_hitl_page()
+    def choose_json_folder(self) -> None:
+        start = str(self.json_folder or (self.hitl_jsons[-1].parent if self.hitl_jsons else self.project_root))
+        chosen = QFileDialog.getExistingDirectory(self, "Choose the folder with JSON files", start)
+        if not chosen:
+            return
+        folder = Path(chosen)
+        files = scan_json_folder(folder)
+        if not files:
+            self.show_toast(f"No JSON files in {folder.name or folder}")
+            return
+        self.hitl_jsons = files
+        self._set_json_folder(folder)
+        self._load_relationships()
+        self.load_hitl_page()
+        self.show_toast(f"Loaded {len(files)} JSON from {folder.name or folder}")
+
+    def _viewed_paths(self) -> list[Path]:
+        return [self.viewed_json] if self.viewed_json is not None else list(self.hitl_jsons)
+
+    def _relationship_inputs(self) -> list[Path]:
+        json_paths = self._viewed_paths()
+        for path in list(json_paths):
+            ocr = path.with_name("01_ocr_word_dict.json")
+            if ocr.is_file() and ocr not in json_paths:
+                json_paths.append(ocr)
+        return json_paths
+
+    def _remember_json_state(self) -> None:
+        # Called after every read, so a watcher event for a file we just wrote is recognised as our own change.
+        for path in {*self._viewed_paths(), *self._relationship_inputs()}:
+            self._seen_json[path] = json_file_state(path)
+
+    def _set_json_folder(self, folder: Path | None, packet: bool = False) -> None:
+        self.json_folder = folder
+        self.packet_mode = packet
+        self.viewed_json = None
+        self._rescan_json_folder()
+
+    def _rescan_json_folder(self) -> None:
+        folder = self.json_folder
+        if folder is None or not folder.is_dir():
+            self.json_files = []
+        elif self.packet_mode:
+            self.json_files = packet_files(folder)[1]
+        else:
+            self.json_files = scan_json_folder(folder)
+        if self.viewed_json is not None and self.viewed_json not in self.json_files:
+            self.viewed_json = None
+        self._refresh_json_select()
+        self.json_watcher.watch_files({*self.json_files, *self.hitl_jsons, *self._relationship_inputs()})
+        self.json_watcher.watch_folder(folder)
+
+    def _refresh_json_select(self) -> None:
+        if not hasattr(self, "json_select"):
+            return
+        self.json_select.blockSignals(True)
+        self.json_select.clear()
+        self.json_select.addItem("All loaded", None)
+        for path in self.json_files:
+            label = path.name if path in self.hitl_jsons else f"{path.name}  (not loaded)"
+            self.json_select.addItem(label, str(path))
+            self.json_select.setItemData(self.json_select.count() - 1, str(path), Qt.ItemDataRole.ToolTipRole)
+        index = self.json_select.findData(str(self.viewed_json)) if self.viewed_json is not None else 0
+        self.json_select.setCurrentIndex(max(0, index))
+        self.json_select.blockSignals(False)
+
+    def _on_json_view_changed(self, index: int) -> None:
+        data = self.json_select.itemData(index)
+        self.viewed_json = Path(data) if data else None
+        if self.viewed_json is not None and self.viewed_json not in self.hitl_jsons:
+            self.hitl_jsons.append(self.viewed_json)  # Picking a file loads it
+        self._load_relationships()
+        self.load_hitl_page()
+
+    def reload_json_now(self, *_args) -> None:
+        self.json_watcher.cancel_pending()
+        self.reload_json_files("Reloaded JSON")
+
+    def reload_json_files(self, message: str) -> None:
+        self._rescan_json_folder()
+        self._load_relationships()
+        self.load_hitl_page()
+        self.show_toast(f"{message}  ·  {len(self._viewed_paths())} JSON")
+
+    def _on_json_file_settled(self, path: Path) -> None:
+        if path not in self._relationship_inputs():
+            return  # Not in use. It is read fresh the next time someone selects it.
+        if json_file_state(path) == self._seen_json.get(path):
+            return  # The page already shows this version, for example after our own save.
+        self.reload_json_files(f"Reloaded {path.name} after a change")
+
+    def _on_json_folder_changed(self, folder: Path) -> None:
+        if folder == self.json_folder:
+            self._rescan_json_folder()
 
     def remove_hitl_json(self) -> None:
-        item = self.hitl_json_list.currentItem() if hasattr(self, "hitl_json_list") else None
-        if item is None:
-            self.show_toast("Select a loaded JSON to remove")
+        path = self.viewed_json
+        if path is None:
+            self.show_toast("Pick a JSON in the dropdown to remove it")
             return
-        path = Path(str(item.data(Qt.ItemDataRole.UserRole) or item.toolTip() or ""))
+        if path not in self.hitl_jsons:
+            self.show_toast(f"{path.name} is not in the loaded set")
+            return
         self.hitl_jsons = [existing for existing in self.hitl_jsons if existing != path]
+        self.viewed_json = None
         self._load_relationships()
         self.load_hitl_page()
         self.show_toast(f"Removed  ·  {path.name or 'JSON'}")
@@ -1490,23 +1762,11 @@ class WorkflowWindow(QMainWindow):
         self.load_hitl_page()
 
     def _sync_hitl_files(self) -> None:
-        if hasattr(self, "hitl_json_list"):
-            self.hitl_json_list.clear()
-            if self.hitl_jsons:
-                for path in self.hitl_jsons:
-                    item = QListWidgetItem(path.name)
-                    item.setToolTip(str(path))
-                    item.setData(Qt.ItemDataRole.UserRole, str(path))
-                    self.hitl_json_list.addItem(item)
-            else:
-                placeholder = QListWidgetItem("No JSON loaded")
-                placeholder.setFlags(Qt.ItemFlag.NoItemFlags)
-                placeholder.setForeground(theme.color("text_muted"))
-                self.hitl_json_list.addItem(placeholder)
         if hasattr(self, "hitl_pdf_label"):
             pdf_name = self.hitl_pdf.name if self.hitl_pdf else "No PDF loaded"
             self.hitl_pdf_label.setText(f"PDF: {pdf_name}")
             self.hitl_pdf_label.setToolTip(str(self.hitl_pdf) if self.hitl_pdf else "")
+        self._refresh_json_select()
 
     def load_qaqc_csv(self) -> None:
         start = str(self.hitl_pdf.parent) if self.hitl_pdf else str(self.project_root.parent)
@@ -1535,6 +1795,7 @@ class WorkflowWindow(QMainWindow):
             self.pdf_path.setText(str(pre))
         if jsons:
             self.hitl_jsons = jsons
+            self._set_json_folder(folder, packet=True)
         self._load_relationships()
         self.task_combo.blockSignals(True)
         self.task_combo.clear()
@@ -1699,6 +1960,9 @@ class WorkflowWindow(QMainWindow):
             return
         if path not in self.hitl_jsons:
             self.hitl_jsons.append(path)
+        if self.viewed_json not in (None, path):
+            self.viewed_json = None  # Show all, so the new box is visible right away
+            self._refresh_json_select()
         self.undo_stack.append((path, previous, self.active_task.key, "added"))
         self.undo_stack = self.undo_stack[-20:]
         self._bump_progress("added")
@@ -1738,9 +2002,10 @@ class WorkflowWindow(QMainWindow):
             if self.page_number.value() > count:
                 self.page_number.setValue(count)
             page = self.page_number.value()
+            self.page_number.setSuffix(f" / {count}")
             self.page_number.blockSignals(False)
             width, height = pdf_page_size(pdf, page)
-            items = collect_page_items(self.hitl_jsons, page, width, height)
+            items = collect_page_items(self._viewed_paths(), page, width, height)
             if self.active_task and self.only_task_boxes.isChecked():
                 items = [item for item in items if item_in_category(item, self.active_task.category)]
             for item in items:
@@ -1766,6 +2031,7 @@ class WorkflowWindow(QMainWindow):
             self.review_page_badge.setText(f"Page {page:03d}{sheet}  /  {len(items)} labels")
             self._sync_label_filter(items)
             self.populate_detections()
+            self._remember_json_state()
         except Exception as error:
             if hasattr(self, "hitl_pdf_label"):
                 self.hitl_pdf_label.setText(f"Could not read this page. {error}")
@@ -1776,6 +2042,7 @@ class WorkflowWindow(QMainWindow):
 
     def _clear_review(self) -> None:
         self.current_review_dir = None
+        self.page_number.setSuffix(" / –")
         self.detection_list.clear()
         self.current_detection = None
         self.current_review = {}

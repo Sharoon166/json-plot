@@ -237,8 +237,12 @@ def build_stylesheet(p: Palette) -> str:
                                  border-radius: {RADIUS}px; padding: 7px 10px; text-align: left; }}
         QPushButton#navButton:hover {{ background: {p.sidebar_hover}; color: {p.text}; }}
         QPushButton#navButton:checked {{ background: {p.sidebar_selected}; color: {p.text}; font-weight: 600; }}
+        QPushButton#sidebarToggle {{ background: transparent; border: 1px solid transparent; border-radius: {RADIUS}px; padding: 4px; }}
+        QPushButton#sidebarToggle:hover {{ background: {p.sidebar_hover}; }}
         QComboBox#appearance {{ background: {p.sidebar_hover}; border: 1px solid {p.border}; }}
         QComboBox#appearance QAbstractItemView {{ background: {p.surface}; }}
+        QWidget#sidebar[collapsed="true"] QLabel#brand {{ font-size: 11px; }}
+        QWidget#sidebar[collapsed="true"] QPushButton#navButton {{ padding: 8px 2px; }}
     """)
 
     add(f"""
@@ -469,6 +473,7 @@ ICON_BY_TEXT = {
     "Show folder": "folder",
     "Rename": "pencil",
     "Remove from library": "trash",
+    "Remove JSON": "x",
     "New project": "plus",
     "Annotate a page": "arrow-right",
     "Keep": "check",
@@ -481,8 +486,11 @@ ICON_BY_TEXT = {
     "Run page": "play",
     "Stop": "square",
     "Prepare dataset": "database",
+    "Projects": "layout-dashboard",
     "Labels": "tag",
     "Map": "network",
+    "Collapse": "panel-left-close",
+    "Expand": "panel-left-open",
 }
 # Icon-only buttons, matched on their whole caption.
 ICON_BY_GLYPH = {"\u21bb": "refresh", "\u2212": "minus", "\uff0b": "plus"}

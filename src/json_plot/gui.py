@@ -10,6 +10,7 @@ from PySide6.QtCore import QByteArray, QPointF, QProcess, QProcessEnvironment, Q
 from PySide6.QtGui import QColor, QFontMetrics, QImage, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
+    QAbstractItemView,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -596,29 +597,38 @@ class WorkflowWindow(QMainWindow):
         root_layout.setContentsMargins(0, 0, 0, 0)
         root_layout.setSpacing(0)
 
-        sidebar = QWidget()
-        sidebar.setObjectName("sidebar")
-        sidebar.setFixedWidth(96)
-        side_layout = QVBoxLayout(sidebar)
+        self.sidebar = QWidget()
+        self.sidebar.setObjectName("sidebar")
+        self.sidebar.setFixedWidth(96)
+        side_layout = QVBoxLayout(self.sidebar)
         side_layout.setContentsMargins(8, 12, 8, 10)
         side_layout.setSpacing(4)
-        brand = QLabel("JSON\nPlot")
-        brand.setObjectName("brand")
-        brand.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        side_layout.addWidget(brand)
+        self.brand = QLabel("JSON\nPlot")
+        self.brand.setObjectName("brand")
+        self.brand.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        side_layout.addWidget(self.brand)
         side_layout.addSpacing(12)
         self.nav_buttons = []
-        self.page_targets = (4, 5)
+        self.nav_titles = []
+        self.page_targets = (0, 4, 5)
         self.stack = QStackedWidget()
-        for title, target in (("Labels", 4), ("Map", 5)):
+        for title, target in (("Projects", 0), ("Labels", 4), ("Map", 5)):
             button = QPushButton(title)
             button.setObjectName("navButton")
             button.setCheckable(True)
-            button.setToolTip(f"Open {title.lower()} workspace")
+            tooltip = "Manage projects" if target == 0 else f"Open {title.lower()} workspace"
+            button.setToolTip(tooltip)
             button.clicked.connect(lambda checked=False, i=target: self.show_page(i))
             side_layout.addWidget(button)
             self.nav_buttons.append(button)
+            self.nav_titles.append(title)
         side_layout.addStretch(1)
+        self.sidebar_toggle = QPushButton()
+        self.sidebar_toggle.setObjectName("sidebarToggle")
+        self.sidebar_toggle.setToolTip("Collapse sidebar")
+        self.sidebar_toggle.clicked.connect(self.toggle_sidebar)
+        side_layout.addWidget(self.sidebar_toggle)
+        side_layout.addSpacing(4)
         self.appearance_combo = QComboBox()
         self.appearance_combo.setObjectName("appearance")
         self.appearance_combo.setToolTip("Appearance")
@@ -630,11 +640,13 @@ class WorkflowWindow(QMainWindow):
         self.appearance_combo.currentIndexChanged.connect(self._change_appearance)
         side_layout.addWidget(self.appearance_combo)
         side_layout.addSpacing(6)
-        self.pipeline_status = QLabel("● Ready")
+        self._pipeline_status_full = "●  Ready"
+        self.pipeline_status = QLabel(self._pipeline_status_full)
         self.pipeline_status.setObjectName("sideStatus")
         self.pipeline_status.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         side_layout.addWidget(self.pipeline_status)
-        root_layout.addWidget(sidebar)
+        self.sidebar_collapsed = False
+        root_layout.addWidget(self.sidebar)
 
         content = QWidget()
         content.setObjectName("content")
@@ -670,7 +682,8 @@ class WorkflowWindow(QMainWindow):
         content_layout.addWidget(self.stack, 1)
         root_layout.addWidget(content, 1)
         self.setCentralWidget(root)
-        self.show_page(4)
+        self._apply_sidebar_state()
+        self.show_page(0)
 
     def _build_projects(self) -> QWidget:
         page = QWidget()
@@ -812,8 +825,11 @@ class WorkflowWindow(QMainWindow):
         if was_active:
             self.project = None
             self.project_settings = {}
+            self.hitl_jsons = []
+            self.hitl_pdf = None
             self.refresh_dashboard()
             self.refresh_pages()
+            self.show_page(0)
         self.refresh_project_list()
 
     def _select_project_row(self, project_id: str) -> None:
@@ -826,6 +842,10 @@ class WorkflowWindow(QMainWindow):
         project = self.selected_project()
         if project is not None:
             self.set_project(project)
+
+    def main_page(self) -> None:
+        """Open the project manager/library view."""
+        self.show_page(0)
 
     def set_project(self, project: dict[str, Any], navigate: bool = True) -> None:
         self.project = project
@@ -1049,9 +1069,14 @@ class WorkflowWindow(QMainWindow):
         controls.addWidget(self.pdf_path, 1)
         self.pages = QComboBox()  # kept for page selection; invisible in the compact layout
         self.pages.hide()
-        for caption, slot in (("PDF", self.choose_pdf), ("JSON", self.add_hitl_json)):
+        for caption, slot, tip in (
+            ("PDF", self.choose_pdf, "Choose PDF to review"),
+            ("JSON", self.add_hitl_json, "Add JSON files with labels/data"),
+            ("Remove JSON", self.remove_hitl_json, "Remove selected JSON from loaded data"),
+        ):
             button = QPushButton(caption)
             button.setObjectName("compactButton")
+            button.setToolTip(tip)
             button.clicked.connect(slot)
             controls.addWidget(button)
         self.page_number = QSpinBox()
@@ -1095,9 +1120,27 @@ class WorkflowWindow(QMainWindow):
         )
         self.task_banner.setObjectName("banner")
         info_row.addWidget(self.task_banner, 1)
-        self.hitl_file_label = ElidedLabel("Open a PDF, then open the JSON files. Their labels are drawn on the page.")
-        self.hitl_file_label.setObjectName("muted")
-        info_row.addWidget(self.hitl_file_label, 1)
+
+        files_panel = QWidget()
+        files_layout = QVBoxLayout(files_panel)
+        files_layout.setContentsMargins(0, 0, 0, 0)
+        files_layout.setSpacing(2)
+        files_title = QLabel("Loaded data")
+        files_title.setObjectName("caption")
+        files_layout.addWidget(files_title)
+        self.hitl_json_list = QListWidget()
+        self.hitl_json_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.hitl_json_list.setUniformItemSizes(True)
+        self.hitl_json_list.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.hitl_json_list.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.hitl_json_list.setMaximumHeight(72)
+        self.hitl_json_list.setMinimumHeight(40)
+        self.hitl_json_list.setToolTip("JSON files currently fed into the viewer. Select one and click Remove JSON to unload it.")
+        files_layout.addWidget(self.hitl_json_list)
+        self.hitl_pdf_label = ElidedLabel("No PDF loaded")
+        self.hitl_pdf_label.setObjectName("muted")
+        files_layout.addWidget(self.hitl_pdf_label)
+        info_row.addWidget(files_panel, 1)
         layout.addLayout(info_row)
 
         review_layout = QHBoxLayout()
@@ -1221,14 +1264,41 @@ class WorkflowWindow(QMainWindow):
         layout.addLayout(review_layout, 1)
         return page
 
+    def toggle_sidebar(self) -> None:
+        self.sidebar_collapsed = not self.sidebar_collapsed
+        self._apply_sidebar_state()
+
+    def _apply_sidebar_state(self) -> None:
+        collapsed = self.sidebar_collapsed
+        self.sidebar.setFixedWidth(56 if collapsed else 96)
+        theme.set_property(self.sidebar, "collapsed", "true" if collapsed else "false")
+        self.brand.setText("JP" if collapsed else "JSON\nPlot")
+        self.brand.setToolTip("JSON Plot" if collapsed else "")
+        self.sidebar_toggle.setToolTip("Expand sidebar" if collapsed else "Collapse sidebar")
+        theme.set_icon(self.sidebar_toggle, "panel-left-open" if collapsed else "panel-left-close", size=16)
+        for button, title in zip(self.nav_buttons, self.nav_titles):
+            button.setText("" if collapsed else title)
+            button.setToolTip(title)
+        self.appearance_combo.blockSignals(True)
+        for index, mode in enumerate(theme.MODES):
+            self.appearance_combo.setItemText(index, "" if collapsed else theme.MODE_LABELS[mode])
+        self.appearance_combo.setMinimumContentsLength(0 if collapsed else 1)
+        self.appearance_combo.setFixedWidth(40 if collapsed else 80)
+        self.appearance_combo.blockSignals(False)
+        self.pipeline_status.setText("●" if collapsed else self._pipeline_status_full)
+        self.pipeline_status.setToolTip(self._pipeline_status_full if collapsed else "")
+
     def _on_theme_changed(self, _scheme: str) -> None:
         # Custom painters cache nothing colour-related, so a repaint is enough.
         theme.refresh_icons(self)
         self.appearance_combo.blockSignals(True)
         for index, mode in enumerate(theme.MODES):
             self.appearance_combo.setItemIcon(index, icons.icon(theme.MODE_ICONS[mode], theme.token("text_muted")))
+            self.appearance_combo.setItemText(index, "" if self.sidebar_collapsed else theme.MODE_LABELS[mode])
         self.appearance_combo.setCurrentIndex(theme.MODES.index(theme.manager().mode))
         self.appearance_combo.blockSignals(False)
+        if hasattr(self, "sidebar_toggle"):
+            theme.set_icon(self.sidebar_toggle, "panel-left-open" if self.sidebar_collapsed else "panel-left-close", size=16)
         for widget in self.findChildren(QWidget):
             widget.update()
 
@@ -1269,7 +1339,9 @@ class WorkflowWindow(QMainWindow):
         for button in (self.prepare_button, self.train_button, self.annotate_button, self.refresh_button):
             button.setEnabled(not running)
         self.cancel_button.setEnabled(running)
-        self.pipeline_status.setText(f"●  {label}" if running else "●  Ready")
+        self._pipeline_status_full = f"●  {label}" if running else "●  Ready"
+        self.pipeline_status.setText("●" if self.sidebar_collapsed else self._pipeline_status_full)
+        self.pipeline_status.setToolTip(self._pipeline_status_full if self.sidebar_collapsed else "")
         theme.set_property(self.pipeline_status, "state", "running" if running else "idle")
 
     def run_command(self, arguments: list[str], label: str) -> None:
@@ -1354,6 +1426,17 @@ class WorkflowWindow(QMainWindow):
             self._load_relationships()
             self.load_hitl_page()
 
+    def remove_hitl_json(self) -> None:
+        item = self.hitl_json_list.currentItem() if hasattr(self, "hitl_json_list") else None
+        if item is None:
+            self.show_toast("Select a loaded JSON to remove")
+            return
+        path = Path(str(item.data(Qt.ItemDataRole.UserRole) or item.toolTip() or ""))
+        self.hitl_jsons = [existing for existing in self.hitl_jsons if existing != path]
+        self._load_relationships()
+        self.load_hitl_page()
+        self.show_toast(f"Removed  ·  {path.name or 'JSON'}")
+
     def choose_weights(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "Choose model weights", str(self.project_root), "Model weights (*.pt);;All files (*)")
         if path:
@@ -1407,11 +1490,23 @@ class WorkflowWindow(QMainWindow):
         self.load_hitl_page()
 
     def _sync_hitl_files(self) -> None:
-        if not hasattr(self, "hitl_file_label"):
-            return
-        pdf_name = self.hitl_pdf.name if self.hitl_pdf else "No PDF"
-        json_names = ", ".join(path.name for path in self.hitl_jsons) or "No JSON"
-        self.hitl_file_label.setText(f"{pdf_name}   ·   {json_names}")
+        if hasattr(self, "hitl_json_list"):
+            self.hitl_json_list.clear()
+            if self.hitl_jsons:
+                for path in self.hitl_jsons:
+                    item = QListWidgetItem(path.name)
+                    item.setToolTip(str(path))
+                    item.setData(Qt.ItemDataRole.UserRole, str(path))
+                    self.hitl_json_list.addItem(item)
+            else:
+                placeholder = QListWidgetItem("No JSON loaded")
+                placeholder.setFlags(Qt.ItemFlag.NoItemFlags)
+                placeholder.setForeground(theme.color("text_muted"))
+                self.hitl_json_list.addItem(placeholder)
+        if hasattr(self, "hitl_pdf_label"):
+            pdf_name = self.hitl_pdf.name if self.hitl_pdf else "No PDF loaded"
+            self.hitl_pdf_label.setText(f"PDF: {pdf_name}")
+            self.hitl_pdf_label.setToolTip(str(self.hitl_pdf) if self.hitl_pdf else "")
 
     def load_qaqc_csv(self) -> None:
         start = str(self.hitl_pdf.parent) if self.hitl_pdf else str(self.project_root.parent)
@@ -1672,7 +1767,10 @@ class WorkflowWindow(QMainWindow):
             self._sync_label_filter(items)
             self.populate_detections()
         except Exception as error:
-            self.hitl_file_label.setText(f"Could not read this page. {error}")
+            if hasattr(self, "hitl_pdf_label"):
+                self.hitl_pdf_label.setText(f"Could not read this page. {error}")
+            elif hasattr(self, "hitl_file_label"):
+                self.hitl_file_label.setText(f"Could not read this page. {error}")
         finally:
             self._loading_hitl = False
 

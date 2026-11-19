@@ -315,6 +315,20 @@ def build_stylesheet(p: Palette) -> str:
         QScrollBar::add-page, QScrollBar::sub-page {{ background: none; }}
     """)
 
+    add(f"""
+        QLabel#compactTitle {{ font-size: 15px; font-weight: 600; }}
+        QLabel#banner {{ padding: 3px 6px; font-size: 12px; }}
+        QLabel#sideCaption {{ font-size: 10px; }}
+        QLabel#brand {{ font-size: 13px; line-height: 110%; }}
+        QPushButton#navButton {{ padding: 6px 1px; font-size: 11px; text-align: center; }}
+        QComboBox#appearance {{ padding: 3px 2px; font-size: 11px; }}
+        QComboBox#appearance::drop-down {{ width: 14px; }}
+        QPushButton#compactButton {{ padding: 4px 6px; font-size: 12px; min-height: 12px; }}
+        QSpinBox#compactSpin {{ padding: 3px 4px; font-size: 12px; min-height: 12px; }}
+        QSpinBox#compactSpin::up-button, QSpinBox#compactSpin::down-button {{ width: 12px; }}
+        QFrame#compactPanel {{ background: {p.surface}; border: 1px solid {p.border}; border-radius: {PANEL_RADIUS}px; }}
+    """)
+
     # Dynamic properties, so widgets pick a hue without inline stylesheets.
     for family, hue in CATEGORY_HUE.items():
         add(f'QLabel[category="{family}"] {{ color: {getattr(p, hue)}; font-size: 11px; font-weight: 600; }}')

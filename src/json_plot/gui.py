@@ -7,7 +7,7 @@ from typing import Any
 
 import pdfplumber
 from PySide6.QtCore import QByteArray, QPointF, QProcess, QProcessEnvironment, QRect, QRectF, Qt, QTimer, Signal
-from PySide6.QtGui import QColor, QImage, QPainter, QPen, QPixmap
+from PySide6.QtGui import QColor, QFontMetrics, QImage, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -28,6 +28,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QSpinBox,
     QStackedWidget,
@@ -102,6 +103,33 @@ def metric(title: str, value: str, note: str = "") -> QFrame:
     return item
 
 
+class ElidedLabel(QLabel):
+    """Single-line label that elides its text instead of growing taller."""
+
+    def __init__(self, text: str = "", parent: QWidget | None = None) -> None:
+        super().__init__(text, parent)
+        self._full_text = text
+        self.setWordWrap(False)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.setMinimumWidth(0)
+
+    def setText(self, text: str) -> None:  # noqa: N802 - Qt API
+        self._full_text = text
+        self._elide()
+
+    def text(self) -> str:  # noqa: N802 - Qt API
+        return self._full_text
+
+    def resizeEvent(self, event) -> None:  # noqa: N802 - Qt API
+        super().resizeEvent(event)
+        self._elide()
+
+    def _elide(self) -> None:
+        metrics = QFontMetrics(self.font())
+        shown = metrics.elidedText(self._full_text, Qt.TextElideMode.ElideRight, self.contentsRect().width())
+        super().setText(shown)
+
+
 class ReviewCanvas(QWidget):
     box_created = Signal(float, float, float, float)
     detection_hovered = Signal(object)
@@ -124,6 +152,16 @@ class ReviewCanvas(QWidget):
         self._panning = False
         self._pan_last = None
         self.source: tuple[Path, int] | None = None
+        self.max_render_width = 4096
+
+    def set_max_render_width(self, width: int) -> None:
+        """Cap the pixel width used to rasterise PDF tiles (higher = sharper, more memory)."""
+        width = max(256, int(width))
+        if width == self.max_render_width:
+            return
+        self.max_render_width = width
+        pdf_render.clear_tiles()
+        self.update()
 
     def set_source(self, path: Path | None, page_index: int = 0) -> None:
         """Where sharp tiles come from. page_index is 0-based; None keeps the preview only."""
@@ -148,7 +186,7 @@ class ReviewCanvas(QWidget):
         self.update()
 
     def set_zoom(self, zoom: float) -> None:
-        self.zoom = min(4.0, max(0.08, zoom))
+        self.zoom = min(8.0, max(0.08, zoom))
         if not self.image.isNull():
             self.resize(round(self.image.width() * self.zoom), round(self.image.height() * self.zoom))
         self.update()
@@ -194,7 +232,7 @@ class ReviewCanvas(QWidget):
         if visible.isEmpty():
             return True
         try:
-            pdf_render.paint_page(painter, target, visible, self.source[0], self.source[1])
+            pdf_render.paint_page(painter, target, visible, self.source[0], self.source[1], self.max_render_width)
         except Exception:
             # The PDF engine failed for this page; keep the preview and say why.
             logging.getLogger(__name__).exception("Tile rendering failed; showing preview")
@@ -560,17 +598,15 @@ class WorkflowWindow(QMainWindow):
 
         sidebar = QWidget()
         sidebar.setObjectName("sidebar")
-        sidebar.setFixedWidth(226)
+        sidebar.setFixedWidth(96)
         side_layout = QVBoxLayout(sidebar)
-        side_layout.setContentsMargins(18, 24, 18, 20)
-        side_layout.setSpacing(8)
-        brand = QLabel(theme.APP_NAME)
+        side_layout.setContentsMargins(8, 12, 8, 10)
+        side_layout.setSpacing(4)
+        brand = QLabel("JSON\nPlot")
         brand.setObjectName("brand")
-        subbrand = QLabel("HITL loop")
-        subbrand.setObjectName("sideCaption")
+        brand.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         side_layout.addWidget(brand)
-        side_layout.addWidget(subbrand)
-        side_layout.addSpacing(32)
+        side_layout.addSpacing(12)
         self.nav_buttons = []
         self.page_targets = (4, 5)
         self.stack = QStackedWidget()
@@ -578,42 +614,48 @@ class WorkflowWindow(QMainWindow):
             button = QPushButton(title)
             button.setObjectName("navButton")
             button.setCheckable(True)
+            button.setToolTip(f"Open {title.lower()} workspace")
             button.clicked.connect(lambda checked=False, i=target: self.show_page(i))
             side_layout.addWidget(button)
             self.nav_buttons.append(button)
         side_layout.addStretch(1)
-        appearance_title = QLabel("Appearance")
-        appearance_title.setObjectName("sideCaption")
-        side_layout.addWidget(appearance_title)
         self.appearance_combo = QComboBox()
         self.appearance_combo.setObjectName("appearance")
+        self.appearance_combo.setToolTip("Appearance")
+        self.appearance_combo.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+        self.appearance_combo.setMinimumContentsLength(1)
         for mode in theme.MODES:
             self.appearance_combo.addItem(icons.icon(theme.MODE_ICONS[mode], theme.token("text_muted")), theme.MODE_LABELS[mode], mode)
         self.appearance_combo.setCurrentIndex(theme.MODES.index(theme.manager().mode))
         self.appearance_combo.currentIndexChanged.connect(self._change_appearance)
         side_layout.addWidget(self.appearance_combo)
-        side_layout.addSpacing(10)
-        self.pipeline_status = QLabel("●  Ready")
+        side_layout.addSpacing(6)
+        self.pipeline_status = QLabel("● Ready")
         self.pipeline_status.setObjectName("sideStatus")
+        self.pipeline_status.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         side_layout.addWidget(self.pipeline_status)
         root_layout.addWidget(sidebar)
 
         content = QWidget()
         content.setObjectName("content")
         content_layout = QVBoxLayout(content)
-        content_layout.setContentsMargins(34, 26, 34, 28)
-        content_layout.setSpacing(18)
+        content_layout.setContentsMargins(6, 4, 6, 4)
+        content_layout.setSpacing(6)
         header = QHBoxLayout()
+        header.setSpacing(8)
         self.heading = QLabel("Overview")
-        self.heading.setObjectName("pageTitle")
+        self.heading.setObjectName("compactTitle")
         header.addWidget(self.heading)
         header.addStretch(1)
-        self.header_status = QLabel("Project library")
+        self.header_status = ElidedLabel("Project library")
         self.header_status.setObjectName("caption")
+        self.header_status.setMaximumWidth(180)
         header.addWidget(self.header_status)
-        self.help_button = QPushButton("Help")
+        self.help_button = QPushButton()
+        self.help_button.setObjectName("ghostButton")
         self.help_button.setToolTip("Open workflow help")
         self.help_button.clicked.connect(self.show_help)
+        theme.set_icon(self.help_button, "circle-help", size=14)
         header.addWidget(self.help_button)
         content_layout.addLayout(header)
 
@@ -996,72 +1038,78 @@ class WorkflowWindow(QMainWindow):
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(3)
 
-        page_row = QHBoxLayout()
-        heading = QLabel("Plot the JSON labels on the PDF")
-        heading.setObjectName("sectionTitle")
-        page_row.addWidget(heading)
-        page_row.addStretch(1)
-        self.pages = QComboBox()
-        self.refresh_button = QPushButton("↻")
-        self.refresh_button.setToolTip("Reload this page from the JSON")
-        self.refresh_button.clicked.connect(self.load_hitl_page)
-        page_row.addWidget(self.refresh_button)
-        layout.addLayout(page_row)
-
+        # One compact control strip. The canvas gets everything else.
         controls = QHBoxLayout()
+        controls.setSpacing(5)
         self.pdf_path = QLineEdit()
-        self.pdf_path.setMinimumWidth(220)
-        self.pdf_path.setPlaceholderText("PDF")
+        self.pdf_path.setMinimumWidth(160)
+        self.pdf_path.setPlaceholderText("PDF to review")
         controls.addWidget(self.pdf_path, 1)
-        browse_pdf = QPushButton("PDF")
-        browse_pdf.clicked.connect(self.choose_pdf)
-        controls.addWidget(browse_pdf)
-        add_json = QPushButton("JSON")
-        add_json.clicked.connect(self.add_hitl_json)
-        controls.addWidget(add_json)
+        self.pages = QComboBox()  # kept for page selection; invisible in the compact layout
+        self.pages.hide()
+        for caption, slot in (("PDF", self.choose_pdf), ("JSON", self.add_hitl_json)):
+            button = QPushButton(caption)
+            button.setObjectName("compactButton")
+            button.clicked.connect(slot)
+            controls.addWidget(button)
         self.page_number = QSpinBox()
         self.page_number.setRange(1, 9999)
         self.page_number.setValue(1)
+        self.page_number.setObjectName("compactSpin")
+        self.page_number.setToolTip("Page number")
         self.page_number.valueChanged.connect(self.load_hitl_page)
         controls.addWidget(self.page_number)
+        self.refresh_button = QPushButton("↻")
+        self.refresh_button.setObjectName("compactButton")
+        self.refresh_button.setToolTip("Reload this page from the JSON")
+        self.refresh_button.clicked.connect(self.load_hitl_page)
+        controls.addWidget(self.refresh_button)
         self.annotate_button = QPushButton("Run page")
+        self.annotate_button.setObjectName("compactButton")
         self.annotate_button.hide()
+        controls.addWidget(self.annotate_button)
         review_csv = QPushButton("Review CSV")
+        review_csv.setObjectName("compactButton")
         review_csv.setToolTip("Open the QAQC sheet and jump to the pages it marks")
         review_csv.clicked.connect(self.load_qaqc_csv)
         controls.addWidget(review_csv)
-        layout.addLayout(controls)
-
-        task_row = QHBoxLayout()
         self.task_combo = QComboBox()
-        self.task_combo.setMinimumWidth(420)
+        self.task_combo.setMinimumWidth(180)
         self.task_combo.addItem("Open a review CSV to get a sheet list", None)
         self.task_combo.currentIndexChanged.connect(self._select_task)
-        task_row.addWidget(self.task_combo, 1)
+        controls.addWidget(self.task_combo, 2)
         self.only_task_boxes = QCheckBox("Only this type")
         self.only_task_boxes.setChecked(True)
         self.only_task_boxes.setToolTip("Draw only the callouts, doors, or schedule rows this review row is about")
         self.only_task_boxes.toggled.connect(self.load_hitl_page)
-        task_row.addWidget(self.only_task_boxes)
-        layout.addLayout(task_row)
-        self.task_banner = QLabel("Open the review CSV. Each row is a sheet to check on the clean PDF. Keep leaves a box. Remove deletes that one box from its JSON. Draw missing adds a box.")
-        self.task_banner.setWordWrap(True)
+        controls.addWidget(self.only_task_boxes)
+        layout.addLayout(controls)
+
+        info_row = QHBoxLayout()
+        info_row.setSpacing(10)
+        self.task_banner = ElidedLabel(
+            "Open the review CSV. Each row is a sheet to check on the clean PDF. "
+            "Keep leaves a box. Remove deletes that one box from its JSON. Draw missing adds a box."
+        )
         self.task_banner.setObjectName("banner")
-        layout.addWidget(self.task_banner)
-        self.hitl_file_label = QLabel("Open a PDF, then open the JSON files. Their labels are drawn on the page.")
+        info_row.addWidget(self.task_banner, 1)
+        self.hitl_file_label = ElidedLabel("Open a PDF, then open the JSON files. Their labels are drawn on the page.")
         self.hitl_file_label.setObjectName("muted")
-        self.hitl_file_label.setWordWrap(True)
-        layout.addWidget(self.hitl_file_label)
+        info_row.addWidget(self.hitl_file_label, 1)
+        layout.addLayout(info_row)
 
         review_layout = QHBoxLayout()
-        review_layout.setSpacing(12)
+        review_layout.setSpacing(4)
 
         left = panel()
-        left.setMinimumWidth(245)
-        left.setMaximumWidth(310)
+        left.setObjectName("compactPanel")
+        left.setMinimumWidth(160)
+        left.setMaximumWidth(210)
         left_layout = QVBoxLayout(left)
-        left_layout.setContentsMargins(12, 12, 12, 12)
+        left_layout.setContentsMargins(6, 6, 6, 6)
+        left_layout.setSpacing(3)
         detection_header = QHBoxLayout()
         detection_title = QLabel("Labels")
         detection_title.setObjectName("caption")
@@ -1083,21 +1131,27 @@ class WorkflowWindow(QMainWindow):
         self.detection_list.itemEntered.connect(self.hover_detection)
         left_layout.addWidget(self.detection_list, 1)
         action_row = QHBoxLayout()
+        action_row.setSpacing(4)
         self.keep_button = QPushButton("Keep")
+        self.keep_button.setObjectName("compactButton")
         self.keep_button.setToolTip("Leave this box in the JSON")
         self.keep_button.clicked.connect(self.keep_selected)
         self.remove_button = QPushButton("Remove")
+        self.remove_button.setObjectName("compactButton")
         self.remove_button.setToolTip("Delete this one box from its JSON file")
         self.remove_button.clicked.connect(self.remove_selected)
         action_row.addWidget(self.keep_button)
         action_row.addWidget(self.remove_button)
         left_layout.addLayout(action_row)
         draw_row = QHBoxLayout()
+        draw_row.setSpacing(4)
         self.draw_button = QPushButton("Draw missing")
+        self.draw_button.setObjectName("compactButton")
         self.draw_button.setCheckable(True)
         self.draw_button.setToolTip("Drag a box on the page. It is appended to the JSON for this review row.")
         self.draw_button.toggled.connect(self.toggle_draw)
         self.undo_button = QPushButton("Undo")
+        self.undo_button.setObjectName("compactButton")
         self.undo_button.setToolTip("Put back the last box you removed or added")
         self.undo_button.clicked.connect(self.undo_json_edit)
         draw_row.addWidget(self.draw_button)
@@ -1107,14 +1161,16 @@ class WorkflowWindow(QMainWindow):
 
         preview_panel = panel()
         preview_layout = QVBoxLayout(preview_panel)
-        preview_layout.setContentsMargins(10, 10, 10, 10)
+        preview_layout.setContentsMargins(2, 2, 2, 2)
+        preview_layout.setSpacing(2)
         preview_header = QHBoxLayout()
+        preview_header.setSpacing(8)
         self.review_page_badge = QLabel("No page loaded")
         self.review_page_badge.setObjectName("caption")
         preview_header.addWidget(self.review_page_badge)
         preview_header.addStretch(1)
         for title, family in LABEL_LEGEND:
-            legend = QLabel(f"●  {title}")
+            legend = QLabel(f"● {title}")
             theme.set_property(legend, "category", family)
             preview_header.addWidget(legend)
         preview_layout.addLayout(preview_header)
@@ -1123,24 +1179,42 @@ class WorkflowWindow(QMainWindow):
         self.image_view = ImageScrollArea(self.canvas)
         preview_layout.addWidget(self.image_view, 1)
         zoom_row = QHBoxLayout()
+        zoom_row.setSpacing(4)
         self.zoom_out_button = QPushButton("−")
+        self.zoom_out_button.setObjectName("compactButton")
         self.zoom_out_button.setToolTip("Zoom out")
         self.zoom_out_button.clicked.connect(lambda: self.image_view.set_zoom(self.canvas.zoom / 1.2))
         self.zoom_in_button = QPushButton("＋")
+        self.zoom_in_button.setObjectName("compactButton")
         self.zoom_in_button.setToolTip("Zoom in")
         self.zoom_in_button.clicked.connect(lambda: self.image_view.set_zoom(self.canvas.zoom * 1.2))
         self.zoom_slider = QSlider(Qt.Orientation.Horizontal)
-        self.zoom_slider.setRange(8, 400)
-        self.zoom_slider.setFixedWidth(130)
+        self.zoom_slider.setRange(8, 800)
+        self.zoom_slider.setFixedWidth(110)
         self.zoom_slider.valueChanged.connect(lambda value: self.image_view.set_zoom(value / 100))
         self.zoom_label = QLabel("100%")
-        self.zoom_label.setMinimumWidth(42)
+        self.zoom_label.setMinimumWidth(38)
         self.fit_button = QPushButton("Fit")
+        self.fit_button.setObjectName("compactButton")
         self.fit_button.clicked.connect(self.image_view.fit_to_view)
         self.actual_size_button = QPushButton("100%")
+        self.actual_size_button.setObjectName("compactButton")
         self.actual_size_button.clicked.connect(lambda: self.image_view.set_zoom(1.0))
         for widget in (self.zoom_out_button, self.zoom_in_button, self.zoom_slider, self.zoom_label, self.fit_button, self.actual_size_button):
             zoom_row.addWidget(widget)
+        max_render_label = QLabel("Max render")
+        max_render_label.setObjectName("caption")
+        max_render_label.setToolTip("Maximum pixel width used to rasterise PDF pages")
+        zoom_row.addWidget(max_render_label)
+        self.max_render_spin = QSpinBox()
+        self.max_render_spin.setObjectName("compactSpin")
+        self.max_render_spin.setRange(512, 8192)
+        self.max_render_spin.setSingleStep(512)
+        self.max_render_spin.setValue(self.canvas.max_render_width)
+        self.max_render_spin.setSuffix(" px")
+        self.max_render_spin.setToolTip("Maximum pixel width used to rasterise PDF pages. Higher is sharper but uses more memory.")
+        self.max_render_spin.valueChanged.connect(self.canvas.set_max_render_width)
+        zoom_row.addWidget(self.max_render_spin)
         zoom_row.addStretch(1)
         preview_layout.addLayout(zoom_row)
         review_layout.addWidget(preview_panel, 1)

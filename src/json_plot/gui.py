@@ -53,7 +53,7 @@ from json_plot.config import (
 )
 from json_plot.graph_view import RelationshipPage
 from json_plot.hitl_coach import detection_brief, page_brief
-from json_plot.hitl_session import LABEL_LEGEND, collect_page_items, pdf_page_count, pdf_page_size
+from json_plot.hitl_session import LABEL_LEGEND, collect_page_items
 from json_plot import icons, pdf_render, theme
 from json_plot.json_watch import JsonWatcher, json_file_state, scan_json_folder
 from json_plot.project_detect import detect_sources
@@ -1996,7 +1996,7 @@ class WorkflowWindow(QMainWindow):
             if pdf is None:
                 self._clear_review()
                 return
-            count = pdf_page_count(pdf)
+            count = pdf_render.page_count(pdf)
             self.page_number.blockSignals(True)
             self.page_number.setMaximum(max(1, count))
             if self.page_number.value() > count:
@@ -2004,14 +2004,15 @@ class WorkflowWindow(QMainWindow):
             page = self.page_number.value()
             self.page_number.setSuffix(f" / {count}")
             self.page_number.blockSignals(False)
-            width, height = pdf_page_size(pdf, page)
+            width, height = pdf_render.page_size(pdf, page - 1)
             items = collect_page_items(self._viewed_paths(), page, width, height)
             if self.active_task and self.only_task_boxes.isChecked():
                 items = [item for item in items if item_in_category(item, self.active_task.category)]
             for item in items:
                 if self._kept_key(item) in self.kept_marks:
                     item["kept"] = True
-            pixmap = self.load_page_image(pdf, page, 80)
+            # The canvas draws the page itself from PDF tiles, so only its size is needed here.
+            pixmap = self._blank_page(width, height, 80)
             self.current_review_dir = None
             self.current_detection_doc = {
                 "page_number": page,
@@ -2131,6 +2132,11 @@ class WorkflowWindow(QMainWindow):
         else:
             self.current_detection = None
             self.canvas.set_hovered_detection(None)
+
+    def _blank_page(self, width: float, height: float, dpi: int) -> QPixmap:
+        pixmap = QPixmap(max(1, round(width * dpi / 72)), max(1, round(height * dpi / 72)))
+        pixmap.fill(Qt.GlobalColor.white)
+        return pixmap
 
     def load_page_image(self, source: Path, page_number: int, dpi: int) -> QPixmap:
         key = (str(source), page_number, dpi)

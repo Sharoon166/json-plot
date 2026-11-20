@@ -231,7 +231,7 @@ def build_stylesheet(p: Palette) -> str:
         QWidget#sidebar {{ background: {p.sidebar}; }}
         QLabel#brand {{ font-size: 15px; font-weight: 600; }}
         QLabel#sideCaption {{ color: {p.text_muted}; font-size: 11px; }}
-        QLabel#sideStatus {{ color: {p.text_muted}; font-size: 12px; }}
+        QLabel#sideStatus {{ color: {p.green}; font-size: 12px; }}
         QLabel#sideStatus[state="running"] {{ color: {p.amber}; }}
         QPushButton#navButton {{ background: transparent; color: {p.text_muted}; border: 0;
                                  border-radius: {RADIUS}px; padding: 7px 10px; text-align: left; }}
@@ -242,7 +242,10 @@ def build_stylesheet(p: Palette) -> str:
         QComboBox#appearance {{ background: {p.sidebar_hover}; border: 1px solid {p.border}; }}
         QComboBox#appearance QAbstractItemView {{ background: {p.surface}; }}
         QWidget#sidebar[collapsed="true"] QLabel#brand {{ font-size: 11px; }}
-        QWidget#sidebar[collapsed="true"] QPushButton#navButton {{ padding: 8px 2px; }}
+        QWidget#sidebar[collapsed="true"] QPushButton#navButton {{ padding: 8px 2px; text-align: center; }}
+        QWidget#sidebar[collapsed="true"] QComboBox#appearance {{ padding: 3px 0px; }}
+        QWidget#sidebar[collapsed="true"] QComboBox#appearance::drop-down {{ width: 0px; border: 0; }}
+        QWidget#sidebar[collapsed="true"] QComboBox#appearance::down-arrow {{ image: none; width: 0px; }}
     """)
 
     add(f"""
@@ -324,12 +327,15 @@ def build_stylesheet(p: Palette) -> str:
         QLabel#banner {{ padding: 3px 6px; font-size: 12px; }}
         QLabel#sideCaption {{ font-size: 10px; }}
         QLabel#brand {{ font-size: 13px; line-height: 110%; }}
-        QPushButton#navButton {{ padding: 6px 1px; font-size: 11px; text-align: center; }}
-        QComboBox#appearance {{ padding: 3px 2px; font-size: 11px; }}
+        QPushButton#navButton {{ padding: 9px 12px; font-size: 13px; text-align: left; }}
+        QComboBox#appearance {{ padding: 3px 6px; font-size: 10px; }}
         QComboBox#appearance::drop-down {{ width: 14px; }}
         QPushButton#compactButton {{ padding: 4px 6px; font-size: 12px; min-height: 12px; }}
         QSpinBox#compactSpin {{ padding: 3px 4px; font-size: 12px; min-height: 12px; }}
         QSpinBox#compactSpin::up-button, QSpinBox#compactSpin::down-button {{ width: 12px; }}
+        QSpinBox#pageNumber {{ padding: 3px 6px; font-size: 12px; min-height: 12px; }}
+        QSpinBox#pageNumber::up-button, QSpinBox#pageNumber::down-button {{ width: 0px; border: 0; }}
+        QSpinBox#pageNumber::up-arrow, QSpinBox#pageNumber::down-arrow {{ image: none; width: 0px; height: 0px; }}
         QFrame#compactPanel {{ background: {p.surface}; border: 1px solid {p.border}; border-radius: {PANEL_RADIUS}px; }}
     """)
 

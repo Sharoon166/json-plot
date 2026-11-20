@@ -22,6 +22,8 @@ TILE = 512
 TILE_CACHE_LIMIT = 96
 _documents: OrderedDict[str, pdfium.PdfDocument] = OrderedDict()
 _tiles: OrderedDict[tuple, QImage] = OrderedDict()
+_pages: OrderedDict[tuple[str, int], pdfium.PdfPage] = OrderedDict()
+PAGE_CACHE_LIMIT = 4
 
 
 def _document(path: Path) -> pdfium.PdfDocument:
@@ -35,6 +37,21 @@ def _document(path: Path) -> pdfium.PdfDocument:
     else:
         _documents.move_to_end(key)
     return document
+
+
+def _page(path: Path, page_index: int) -> pdfium.PdfPage:
+    """Parsing a page costs a noticeable fraction of a second, so keep recently used pages open."""
+    key = (str(path), page_index)
+    page = _pages.get(key)
+    if page is None:
+        page = _document(path)[page_index]
+        _pages[key] = page
+        while len(_pages) > PAGE_CACHE_LIMIT:
+            _, old = _pages.popitem(last=False)
+            old.close()
+    else:
+        _pages.move_to_end(key)
+    return page
 
 
 def render_tile(
@@ -54,7 +71,7 @@ def render_tile(
         _tiles.move_to_end(key)
         return cached
 
-    page = _document(path)[page_index]
+    page = _page(path, page_index)
     bitmap = raw.FPDFBitmap_Create(width, height, 0)
     try:
         raw.FPDFBitmap_FillRect(bitmap, 0, 0, width, height, 0xFFFFFFFF)
@@ -71,6 +88,16 @@ def render_tile(
     while len(_tiles) > TILE_CACHE_LIMIT:
         _tiles.popitem(last=False)
     return image
+
+
+def page_count(path: Path) -> int:
+    return len(_document(path))
+
+
+def page_size(path: Path, page_index: int) -> tuple[float, float]:
+    """Width and height of a page in PDF points, from the already-open document."""
+    width, height = _page(path, page_index).get_size()
+    return float(width), float(height)
 
 
 def clear_tiles() -> None:
